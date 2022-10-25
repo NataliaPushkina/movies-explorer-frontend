@@ -1,0 +1,38 @@
+.filter-checkbox__group {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background-color: #EBEBEB;
+  border-radius: 50px;
+  display: flex;
+  margin-left: calc(50% - 68px);
+}
+
+.filter-checkbox {
+  visibility: hidden;
+}
+
+.filter-checkbox__label {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #2BE080;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all .4s ease;
+  cursor: pointer;
+}
+
+.filter-checkbox:checked+.filter-checkbox__label {
+  transform: translateX(16px);
+}
+
+.filter-checkbox__name {
+  margin: 0 0 0 36px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #000;
+}

@@ -1,0 +1,11 @@
+.user-icon {
+  width: 30px;
+  height: 30px;
+  background-color: #f4f4f4;
+  border-radius: 6px;
+  background-image: url("../../images/user-icon.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f4f4f4;
+  margin-left: 13px;
+}

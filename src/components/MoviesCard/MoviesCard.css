@@ -1,0 +1,108 @@
+.card {
+  max-width: 360px;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  position: relative;
+  background: #FFF;
+  border-radius: 6px;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 14px 18px 18px;
+}
+
+.card__title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #000;
+}
+
+.card__subtitle {
+  margin: 0;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: #A0A0A0;
+}
+
+.card__image {
+  width: 100%;
+  max-width: 360px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card__check-button {
+  margin: 18px 0;
+  width: 100px;
+  height: 29px;
+  background-color: #F4F4F4;
+  border-radius: 30px;
+  border: 0;
+  align-self: center;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 11px;
+  color: #000;
+  position: relative;
+}
+
+.card__check-button::after {
+  content: 'Сохранить';
+  top: 0;
+  left: 0;
+}
+
+.card__check-button_active {
+  background-color: #EE3465;
+  background-image: url('../../images/save-button.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 18px 0;
+  width: 100px;
+  height: 29px;
+  border-radius: 30px;
+  border: 0;
+  align-self: center;
+}
+
+.card__delete-button_active {
+  margin: 18px 0;
+  width: 100px;
+  height: 29px;
+  background-color: #F4F4F4;
+  background-image: url('../../images/delete-icon.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 30px;
+  border: 0;
+  align-self: center;
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    max-width: 342px;
+  }
+  .card__image {
+    max-width: 342px;
+    height: 190px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .card {
+    max-width: 300px;
+  }
+  .card__image {
+    max-width: 300px;
+    height: 168px;
+  }
+}

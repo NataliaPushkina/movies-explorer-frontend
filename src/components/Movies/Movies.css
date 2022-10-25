@@ -1,0 +1,29 @@
+.movies {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1280px;
+}
+
+
+.movies__button {
+  width: 100%;
+  max-width: 1280px;
+  background-color: #F4F4F4;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #000;
+  padding: 11px 0 9px;
+  border: 0;
+  margin: 50px auto 80px;
+  display: flex;
+  justify-content: center;
+  transition-duration: .4s;
+}
+
+
+.movies__button:hover {
+  background-color: #3456F3;
+  color: #fff;
+  font-size: 14px;
+}

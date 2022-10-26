@@ -1,5 +1,5 @@
 .footer {
-  padding: 80px 70px 20px;
+  padding: 79px 70px 20px;
   background-color: #F8F8F8;
   max-width: 1280px;
   width: 100%;
@@ -8,7 +8,7 @@
 }
 
 .footer__title {
-  margin: 0 0 20px 0;
+  margin: 0;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;

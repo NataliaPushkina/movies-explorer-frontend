@@ -5,6 +5,7 @@
   font-size: 22px;
   line-height: 27px;
   color: #000;
+  letter-spacing: -0.04em;
 }
 
 @media screen and (max-width: 768px) {
@@ -16,5 +17,7 @@
 @media screen and (max-width: 450px) {
   .section__title {
     padding-top: 70px;
+    font-size: 18px;
+    line-height: 22px;
   }
 }

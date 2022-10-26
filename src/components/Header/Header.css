@@ -1,5 +1,5 @@
 .header {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   max-width: 1280px;
   width: 100%;
   padding: 18px 70px;
@@ -8,7 +8,7 @@
 }
 
 .header_unlogged {
-  background-color: #DDDEE3;
+  background-color: #dddee3;
 }
 
 .header__container {
@@ -23,18 +23,6 @@
 .header_nav {
   display: flex;
   align-items: center;
-}
-
-@media screen and (max-width: 768px) {
-  .header {
-    padding: 18px 30px;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .header {
-    padding: 24px 14px;
-  }
 }
 
 .burger {
@@ -116,7 +104,7 @@
   width: 76px;
   height: 32px;
   background-color: #3456f3;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   color: #fff;
@@ -129,12 +117,29 @@
 }
 
 @media screen and (max-width: 768px) {
+  .header {
+    padding: 18px 30px;
+  }
   .burger {
     display: block;
   }
-
-  .heder__item_signin {
+  .header__item_signin {
     font-size: 12px;
     line-height: 16px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .header {
+    padding: 18px 14px;
+  }
+  .header__item {
+    font-size: 10px;
+  }
+  .header__item_signin {
+    font-size: 10px;
+    width: 54px;
+    height: 26px;
+    margin-left: 14px;
   }
 }

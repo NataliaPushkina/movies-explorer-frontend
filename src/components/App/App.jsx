@@ -80,17 +80,17 @@ function App() {
   };
 
   const handleLogin = (email, password) => {
-    mainApi
-      .authorize(email, password)
-      .then((res) => {
+    // mainApi
+    //   .authorize(email, password)
+    //   .then((res) => {
         setLoggedIn(true);
         history.push("/movies");
-      })
-      .catch((err) => {
-        setRegistrationSuccess(false);
-        infoTooltipOpen();
-        console.log(err);
-      });
+      // })
+      // .catch((err) => {
+        // setRegistrationSuccess(false);
+      //   infoTooltipOpen();
+      //   console.log(err);
+      // });
   };
 
   const handleLogout = () => {
@@ -209,7 +209,7 @@ function App() {
               onBurgerOpen={handleBurgerOpen}
             />
             <SavedMovies
-              movies={savedMovies}
+              movies={movies}
               onDeleteClick={handleDeleteClick}
             />
             <Footer />

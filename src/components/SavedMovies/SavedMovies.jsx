@@ -4,7 +4,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 function SavedMovies({ onDeleteClick, movies }) {
   return (
     <section className="saved-movies">
-      {!movies ? (
+      {movies ? (
         <MoviesCardList onCheckButtonClick={onDeleteClick} movies={movies} />
       ) : (
         <h1 className="saved-movies__text">Нет сохранённых фильмов!</h1>

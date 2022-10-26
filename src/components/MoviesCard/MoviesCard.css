@@ -87,7 +87,7 @@
   position: relative;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .card {
     max-width: 342px;
   }

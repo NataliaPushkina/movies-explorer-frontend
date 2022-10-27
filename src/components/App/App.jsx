@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import "./App.css";
 import Header from "../Header/Header";
@@ -22,12 +22,12 @@ import moviesList from "../../data.json";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isNavTabButtonActive, setisNavTabButtonActive] = useState(false);
-  const [isBurgerOpened, setIsBurgerOpened] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState({ name: "", email: "" });
-  const [movies, setMovies] = useState(moviesList);
+  const [isBurgerOpened, setIsBurgerOpened] = useState(false);// eslint-disable-next-line
+  const [userName, setUserName] = useState("");// eslint-disable-next-line
+  const [userEmail, setUserEmail] = useState("");// eslint-disable-next-line
+  const [isLoading, setIsLoading] = useState(false);// eslint-disable-next-line
+  const [currentUser, setCurrentUser] = useState({ name: "", email: "" });// eslint-disable-next-line
+  const [movies, setMovies] = useState(moviesList);// eslint-disable-next-line
   const [savedMovies, setSavedMovies] = useState([]);
   const [registrationSuccess, setRegistrationSuccess] = useState(true);
   const [isInfoTooltipPopupOpened, setIsInfoTooltipPopupOpened] =
@@ -56,7 +56,7 @@ function App() {
   const infoTooltipOpen = () => {
     setIsInfoTooltipPopupOpened(!isInfoTooltipPopupOpened);
   };
-
+// eslint-disable-next-line
   const confirmWindowOpen = () => {
     setIsConfirmWindowOpened(!isConfirmWindowOpened);
   };

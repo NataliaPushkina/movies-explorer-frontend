@@ -35,21 +35,17 @@ function Login({ onLogin }) {
     }
   };
 
-  const checkValidity = () => {
-    if (emailError || passwordError) {
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-    }
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
     onLogin(email, password);
   };
 
   useEffect(() => {
-    checkValidity();
+    if (emailError || passwordError) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
   }, [emailError, passwordError])
 
   return (

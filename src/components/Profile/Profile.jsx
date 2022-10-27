@@ -43,21 +43,17 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
     }
   };
 
-  const checkValidity = () => {
-    if (nameError || emailError) {
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     onUpdateInfo(name, email);
   };
 
   useEffect(() => {
-    checkValidity();
+    if (nameError || emailError) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
   }, [nameError, emailError]);
 
   return (

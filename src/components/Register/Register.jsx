@@ -49,21 +49,17 @@ function Register({ onRegister }) {
     }
   };
 
-  const checkValidity = (nameError, emailError, passwordError) => {
-    if (nameError || emailError || passwordError) {
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-    }
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
     onRegister(name, email, password);
   };
 
   useEffect(() => {
-    checkValidity(nameError, emailError, passwordError);
+    if (nameError || emailError || passwordError) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
   }, [nameError, emailError, passwordError]);
 
   return (

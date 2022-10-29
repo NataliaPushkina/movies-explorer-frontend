@@ -21,7 +21,6 @@ import moviesList from "../../data.json";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isNavTabButtonActive, setisNavTabButtonActive] = useState(false);
   const [isBurgerOpened, setIsBurgerOpened] = useState(false);// eslint-disable-next-line
   const [userName, setUserName] = useState("");// eslint-disable-next-line
   const [userEmail, setUserEmail] = useState("");// eslint-disable-next-line
@@ -43,8 +42,8 @@ function App() {
       behavior: "smooth",
     });
   };
-  const handleNavTabButtonClick = () => {
-    setisNavTabButtonActive(true);
+
+  const handleScrollClick = () => {
     scroll();
     setTimeout(scroll, 600);
   };
@@ -184,8 +183,7 @@ function App() {
               onBurgerOpen={handleBurgerOpen}
             />
             <Main
-              onNavTabButtonClick={handleNavTabButtonClick}
-              isNavTabButtonActive={isNavTabButtonActive}
+            handleScrollClick={handleScrollClick}
             />
             <Footer />
           </Route>

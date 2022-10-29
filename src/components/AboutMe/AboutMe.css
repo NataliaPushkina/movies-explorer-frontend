@@ -66,6 +66,12 @@
   text-decoration: none;
 }
 
+.about-me__githab-link:hover {
+  font-size: 16px;
+  color: #3456F3;
+  text-decoration: underline dotted #3456F3;
+}
+
 @media screen and (max-width: 1020px) {
   .about-me__content {
     max-width: 364px;

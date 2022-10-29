@@ -14,6 +14,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 18px 14px 18px 18px;
+  gap: 10px;
+  /* box-sizing: border-box; */
 }
 
 .card__title {
@@ -22,6 +24,8 @@
   font-size: 15px;
   line-height: 18px;
   color: #000;
+  max-width: 240px;
+  height: 30px;
 }
 
 .card__subtitle {
@@ -89,20 +93,30 @@
 
 @media screen and (max-width: 900px) {
   .card {
-    max-width: 342px;
+    width: 342px;
   }
   .card__image {
-    max-width: 342px;
+    width: 342px;
     height: 190px;
+  }
+  .card__title {
+    max-width: 224px;
   }
 }
 
 @media screen and (max-width: 450px) {
   .card {
-    max-width: 300px;
+    width: 300px;
   }
   .card__image {
-    max-width: 300px;
+    width: 300px;
     height: 168px;
+  }
+  .card__title {
+    max-width: 200px;
+    font-size: 12px;
+  }
+  .card__subtitle {
+    font-size: 10px;
   }
 }

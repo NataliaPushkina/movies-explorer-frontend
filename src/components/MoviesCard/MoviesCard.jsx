@@ -26,7 +26,7 @@ function MovieCard({ movie, name, duration, link }) {
         alt={name}
         className='card__image'
       />
-      {isSaved ? (
+      {!isSaved ? (
         <button
         type='button'
         className={`${isChecked ? 'card__check-button_active' : 'card__check-button'}`}

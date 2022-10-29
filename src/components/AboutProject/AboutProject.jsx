@@ -1,6 +1,8 @@
+
 import './AboutProject.css';
 
 function AboutProject() {
+
   return (
     <section className='section__about-project'>
       <h2 className='section__title'>О проекте</h2>

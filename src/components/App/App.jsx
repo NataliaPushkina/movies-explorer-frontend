@@ -116,7 +116,6 @@ function App() {
   const closeModalWindows = () => {
     setIsInfoTooltipPopupOpened(false);
     setIsConfirmWindowOpened(false);
-
   };
 
   const handleOverlay = (e) => {
@@ -146,7 +145,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
-        {loggedIn && isBurgerOpened ? (
+        {isBurgerOpened ? (
           <BurgerMenu
             loggedIn={loggedIn}
             isBurgerOpened={isBurgerOpened}

@@ -35,19 +35,6 @@ function App() {
 
   const history = useHistory();
 
-  const scroll = () => {
-    window.scrollTo({
-      top: 700,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const handleScrollClick = () => {
-    scroll();
-    setTimeout(scroll, 600);
-  };
-
   const handleBurgerOpen = () => {
     setIsBurgerOpened(!isBurgerOpened);
   };
@@ -181,9 +168,7 @@ function App() {
               isBurgerOpened={isBurgerOpened}
               onBurgerOpen={handleBurgerOpen}
             />
-            <Main
-            handleScrollClick={handleScrollClick}
-            />
+            <Main />
             <Footer />
           </Route>
           <Route exact path="/movies">

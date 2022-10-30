@@ -9,7 +9,7 @@ function SearchForm() {
   const handleChange = (e) => {
     setSearchInfo(e.target.value);
     if (!e.target.value) {
-      setSearchInfoError("Введите поисковый запрос");
+      setSearchInfoError("Необходимо ввести поисковый запрос");
     } else {
       setSearchInfoError("");
     }
@@ -22,6 +22,7 @@ function SearchForm() {
           <input
             className="search-form__input"
             required
+            placeholder="Введите поисковый запрос"
             type="text"
             name="search-info"
             id="search-info"

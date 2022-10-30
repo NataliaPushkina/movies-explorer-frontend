@@ -28,6 +28,11 @@
   padding: 0 20px;
 }
 
+.search-form__input::placeholder {
+  font-size: 12px;
+  line-height: 14px;
+}
+
 .search-form__input:focus {
   outline: none;
   cursor: text;

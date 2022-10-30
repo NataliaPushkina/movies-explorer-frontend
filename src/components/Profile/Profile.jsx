@@ -57,7 +57,7 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
   }, [nameError, emailError]);
 
   return (
-    <div className="profile">
+    <section className="profile">
       <div className="profile-container">
         <h2 className="profile__title">Привет, {userName}</h2>
         <form className="profile__form" onSubmit={handleSubmit}>
@@ -128,7 +128,7 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
           )}
         </form>
       </div>
-    </div>
+    </section>
   );
 }
 

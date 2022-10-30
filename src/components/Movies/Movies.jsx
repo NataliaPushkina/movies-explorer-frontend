@@ -5,12 +5,12 @@ import Preloader from "../Preloader/Preloader";
 
 function Movies({ onCheckButtonClick, movies, isLoading }) {
   return (
-    <div className="movies">
+    <section className="movies">
       <SearchForm></SearchForm>
       {isLoading ? <Preloader /> : null}
       <MoviesCardList onCheckButtonClick={onCheckButtonClick} movies={movies} />
       <button className="movies__button">Ещё</button>
-    </div>
+    </section>
   );
 }
 

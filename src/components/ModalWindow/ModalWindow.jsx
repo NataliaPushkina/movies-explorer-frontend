@@ -8,7 +8,7 @@ const ModalWindow = ({
   children,
 }) => {
   return (
-    <div
+    <section
       onClick={onOverlay}
       className={`modal-window ${
         (isInfoTooltipPopupOpened || isConfirmWindowOpened) ? "modal-window_opened" : ""
@@ -22,7 +22,7 @@ const ModalWindow = ({
         ></button>
         {children}
       </div>
-    </div>
+    </section>
   );
 };
 

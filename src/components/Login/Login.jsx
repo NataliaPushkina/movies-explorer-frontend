@@ -49,8 +49,8 @@ function Login({ onLogin }) {
   }, [emailError, passwordError])
 
   return (
-    <div className="login">
-      <div className="login-container">
+    <section className="login">
+      <div className="login__container">
         <Link to="/">
           <img src={logo} alt="Логотип" className="link logo-icon" />
         </Link>
@@ -102,7 +102,7 @@ function Login({ onLogin }) {
           </p>
         </form>
       </div>
-    </div>
+    </section>
   );
 }
 

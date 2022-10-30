@@ -1,16 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
-import Movies from "../Movies/Movies";
-import SavedMovies from "../SavedMovies/SavedMovies";
-import Register from "../Register/Register";
-import Profile from "../Profile/Profile";
-import Login from "../Login/Login";
-import NotFoundPage from "../NotFoundPage/NotFoundPage";
+// import Movies from "../Movies/Movies";
+// import SavedMovies from "../SavedMovies/SavedMovies";
+// import Register from "../Register/Register";
+// import Profile from "../Profile/Profile";
+// import Login from "../Login/Login";
+// import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import ConfirmWindow from "../ConfirmWindow/ConfirmWindow";
@@ -21,12 +21,12 @@ import moviesList from "../../data.json";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isBurgerOpened, setIsBurgerOpened] = useState(false);// eslint-disable-next-line
-  const [userName, setUserName] = useState("");// eslint-disable-next-line
-  const [userEmail, setUserEmail] = useState("");// eslint-disable-next-line
-  const [isLoading, setIsLoading] = useState(false);// eslint-disable-next-line
-  const [currentUser, setCurrentUser] = useState({ name: "", email: "" });// eslint-disable-next-line
-  const [movies, setMovies] = useState(moviesList);// eslint-disable-next-line
+  const [isBurgerOpened, setIsBurgerOpened] = useState(false); // eslint-disable-next-line
+  const [userName, setUserName] = useState(""); // eslint-disable-next-line
+  const [userEmail, setUserEmail] = useState(""); // eslint-disable-next-line
+  const [isLoading, setIsLoading] = useState(false); // eslint-disable-next-line
+  const [currentUser, setCurrentUser] = useState({ name: "", email: "" }); // eslint-disable-next-line
+  const [movies, setMovies] = useState(moviesList); // eslint-disable-next-line
   const [savedMovies, setSavedMovies] = useState([]);
   const [registrationSuccess, setRegistrationSuccess] = useState(true);
   const [isInfoTooltipPopupOpened, setIsInfoTooltipPopupOpened] =
@@ -34,6 +34,7 @@ function App() {
   const [isConfirmWindowOpened, setIsConfirmWindowOpened] = useState(false);
 
   const history = useHistory();
+  let location = useLocation();
 
   const handleBurgerOpen = () => {
     setIsBurgerOpened(!isBurgerOpened);
@@ -42,11 +43,10 @@ function App() {
   const infoTooltipOpen = () => {
     setIsInfoTooltipPopupOpened(!isInfoTooltipPopupOpened);
   };
-// eslint-disable-next-line
+  // eslint-disable-next-line
   const confirmWindowOpen = () => {
     setIsConfirmWindowOpened(!isConfirmWindowOpened);
   };
-
 
   const handleRegister = (name, email, password) => {
     // mainApi
@@ -69,14 +69,14 @@ function App() {
     // mainApi
     //   .authorize(email, password)
     //   .then((res) => {
-        setLoggedIn(true);
-        history.push("/movies");
-      // })
-      // .catch((err) => {
-        // setRegistrationSuccess(false);
-      //   infoTooltipOpen();
-      //   console.log(err);
-      // });
+    setLoggedIn(true);
+    history.push("/movies");
+    // })
+    // .catch((err) => {
+    // setRegistrationSuccess(false);
+    //   infoTooltipOpen();
+    //   console.log(err);
+    // });
   };
 
   const handleLogout = () => {
@@ -113,7 +113,7 @@ function App() {
 
   const handleSubmitConfirm = (e) => {
     console.log(e);
-  }
+  };
 
   useEffect(() => {
     function closeByEscape(evt) {
@@ -139,67 +139,36 @@ function App() {
             onBurgerOpen={handleBurgerOpen}
           />
         ) : null}
-        <Switch>
-          <Route exact path="/profile">
-            <Header
-              loggedIn={loggedIn}
-              isBurgerOpened={isBurgerOpened}
-              onBurgerOpen={handleBurgerOpen}
-            />
-            <Profile
-              userName={userName}
-              userEmail={userEmail}
-              onLogout={handleLogout}
-            />
-          </Route>
-          <Route exact path="/signin">
-            <Login onLogin={handleLogin} />
-          </Route>
-          <Route exact path="/signup">
-            <Register
-              onRegister={handleRegister}
-              onInfoTooltipOpen={infoTooltipOpen}
-              registrationSuccess={registrationSuccess}
-            />
-          </Route>
-          <Route exact path="/">
-            <Header
-              loggedIn={loggedIn}
-              isBurgerOpened={isBurgerOpened}
-              onBurgerOpen={handleBurgerOpen}
-            />
-            <Main />
-            <Footer />
-          </Route>
-          <Route exact path="/movies">
-            <Header
-              loggedIn={loggedIn}
-              isBurgerOpened={isBurgerOpened}
-              onBurgerOpen={handleBurgerOpen}
-            />
-            <Movies
-              onCheckButtonClick={handleCheckButtonClick}
-              movies={movies}
-              isLoading={isLoading}
-            />
-            <Footer />
-          </Route>
-          <Route exact path="/saved-movies">
-            <Header
-              loggedIn={loggedIn}
-              isBurgerOpened={isBurgerOpened}
-              onBurgerOpen={handleBurgerOpen}
-            />
-            <SavedMovies
-              movies={movies}
-              onDeleteClick={handleDeleteClick}
-            />
-            <Footer />
-          </Route>
-          <Route>
-            <NotFoundPage />
-          </Route>
-        </Switch>
+
+        {location.pathname === "/" ||
+        location.pathname === "/movies" ||
+        location.pathname === "/saved-movies" ||
+        location.pathname === "/profile" ? (
+          <Header
+            loggedIn={loggedIn}
+            isBurgerOpened={isBurgerOpened}
+            onBurgerOpen={handleBurgerOpen}
+          ></Header>
+        ) : null}
+        <Main
+        userName={userName}
+        userEmail={userEmail}
+        handleLogout={handleLogout}
+        handleLogin={handleLogin}
+        handleRegister={handleRegister}
+        infoTooltipOpen={infoTooltipOpen}
+        registrationSuccess={registrationSuccess}
+        handleCheckButtonClick={handleCheckButtonClick}
+        movies={movies}
+        isLoading={isLoading}
+        handleDeleteClick={handleDeleteClick}
+        >
+        </Main>
+        {location.pathname === "/" ||
+        location.pathname === "/movies" ||
+        location.pathname === "/saved-movies" ? (
+          <Footer />
+        ) : null}
       </div>
       <InfoTooltip
         isInfoTooltipPopupOpened={isInfoTooltipPopupOpened}

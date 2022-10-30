@@ -63,7 +63,7 @@ function Register({ onRegister }) {
   }, [nameError, emailError, passwordError]);
 
   return (
-    <div className="register">
+    <section className="register">
       <div className="register__container">
         <Link to="/">
           <img src={logo} alt="Логотип" className="link logo-icon" />
@@ -124,7 +124,7 @@ function Register({ onRegister }) {
           </p>
         </form>
       </div>
-    </div>
+    </section>
   );
 }
 

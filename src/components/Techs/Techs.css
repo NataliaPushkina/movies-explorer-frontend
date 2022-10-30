@@ -81,26 +81,21 @@
   .section__techs {
     padding: 0 50px;
   }
-
   .section__title-border_techs {
     margin-bottom: 80px;
   }
-
   .techs__item {
     width: 84px;
     height: 57px;
     font-size: 12px;
     line-height: 15px;
   }
-
   .techs__subtitle {
     margin: 22px 0 83px;
   }
-
   .section__title_techs {
     padding: 90px 0 0;
   }
-
   .techs__list {
     padding-bottom: 90px;
   }
@@ -109,27 +104,23 @@
 @media screen and (max-width: 450px) {
   .section__techs {
     padding: 0 18px;
+    background-color: #FAFAFA;
   }
-
   .section__title-border_techs {
     margin-bottom: 60px;
   }
-
   .techs__list {
     padding-bottom: 70px;
   }
-
   .techs__title {
     font-size: 30px;
     line-height: 36px;
   }
-
   .techs__subtitle {
     font-size: 11px;
     line-height: 16px;
     margin: 24px 0 50px;
   }
-
   .section__title_techs {
     padding: 70px 0 0;
   }

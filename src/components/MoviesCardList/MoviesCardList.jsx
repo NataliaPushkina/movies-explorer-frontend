@@ -17,7 +17,6 @@ function MoviesCardList({ onCheckButtonClick, movies }) {
             />
           );
         })}
-
       </ul>
     </section>
   );

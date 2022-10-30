@@ -19,7 +19,7 @@ function Header({ loggedIn, isBurgerOpened, onBurgerOpen }) {
   };
 
   return (
-    <div
+    <section
       className={`header ${location.pathname === "/" ? "header_unlogged" : ""}`}
     >
       <div className="header__container">
@@ -109,7 +109,7 @@ function Header({ loggedIn, isBurgerOpened, onBurgerOpen }) {
           </Route>
         </Switch>
       </div>
-    </div>
+    </section>
   );
 }
 

@@ -1,0 +1,148 @@
+.profile {
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fafafa;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 396px;
+}
+
+.profile__title {
+  text-align: center;
+  margin: 40px 0;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000;
+}
+
+.profile__form {
+  margin-top: 123px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile_input-container {
+  padding: 16px 0;
+  border: none;
+  max-width: 410px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile_input-container:first-child {
+  padding-top: 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.profile__label {
+  margin: 0;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #000;
+}
+
+.profile__input {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: inherit;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: right;
+}
+
+.profile__input:focus {
+  opacity: 0.8;
+  outline: none;
+  cursor: text;
+}
+
+.profile__input::placeholder {
+  text-align: right;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #000;
+}
+
+.form__button_profile {
+  padding: 0;
+  margin-top: 220px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #000;
+  border: none;
+  background-color: inherit;
+}
+
+.profile_save-btn {
+  background: #F8F8F8;
+  color: #C2C2C2;
+  width: 100%;
+  max-width: 410px;
+  height: 45px;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  border: none;
+  margin: 20px 0 50px;
+}
+
+.profile_save-btn_active {
+  background: #3456f3;
+  color: #fff;
+}
+
+.profile__button-signin-link {
+  border: none;
+  background-color: inherit;
+  margin: 16px 0 70px;
+}
+
+.profile__signin-link {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #ee3465;
+  text-decoration: none;
+  text-align: center;
+  justify-self: center;
+}
+
+.profile__error {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #ff004c;
+  text-align: center;
+  margin-top: 179px;
+}
+
+.profile__error-text {
+  margin: 0 0 5px;
+}
+
+@media screen and (max-width: 500px) {
+  .profile-container {
+    padding: 0 30px;
+  }
+}

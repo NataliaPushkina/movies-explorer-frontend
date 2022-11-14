@@ -2,7 +2,6 @@ import "./ModalWindow.css";
 
 const ModalWindow = ({
   isInfoTooltipPopupOpened,
-  isConfirmWindowOpened,
   onClose,
   onOverlay,
   children,
@@ -11,7 +10,7 @@ const ModalWindow = ({
     <section
       onClick={onOverlay}
       className={`modal-window ${
-        (isInfoTooltipPopupOpened || isConfirmWindowOpened) ? "modal-window_opened" : ""
+        isInfoTooltipPopupOpened ? "modal-window_opened" : ""
       }`}
     >
       <div className="modal-window__container">

@@ -12,10 +12,9 @@ import Register from "../Register/Register";
 import Profile from "../Profile/Profile";
 import Login from "../Login/Login";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function Main({
-  userName,
-  userEmail,
   handleLogout,
   handleLogin,
   handleRegister,
@@ -23,8 +22,19 @@ function Main({
   registrationSuccess,
   handleCheckButtonClick,
   movies,
+  savedMovies,
   isLoading,
   handleDeleteClick,
+  handleSearchClick,
+  errorMovie,
+  checkboxChecked,
+  onCheckChange,
+  searchInfo,
+  setSearchInfo,
+  loggedIn,
+  onUpdateInfo,
+  onSaveClick,
+  isSaved,
 }) {
   const aboutRef = useRef(null);
 
@@ -34,13 +44,14 @@ function Main({
   return (
     <section className="main">
       <Switch>
-        <Route exact path="/profile">
-          <Profile
-            userName={userName}
-            userEmail={userEmail}
-            onLogout={handleLogout}
-          />
-        </Route>
+        <ProtectedRoute
+          exact
+          path="/profile"
+          loggedIn={loggedIn}
+          component={Profile}
+          onLogout={handleLogout}
+          onUpdateInfo={onUpdateInfo}
+        ></ProtectedRoute>
         <Route exact path="/signin">
           <Login onLogin={handleLogin} />
         </Route>
@@ -60,16 +71,33 @@ function Main({
             <Portfolio />
           </div>
         </Route>
-        <Route exact path="/movies">
-          <Movies
-            onCheckButtonClick={handleCheckButtonClick}
-            movies={movies}
-            isLoading={isLoading}
-          />
-        </Route>
-        <Route exact path="/saved-movies">
-          <SavedMovies movies={movies} onDeleteClick={handleDeleteClick} />
-        </Route>
+        <ProtectedRoute
+          exact
+          path="/movies"
+          loggedIn={loggedIn}
+          component={Movies}
+          onCheckButtonClick={handleCheckButtonClick}
+          movies={movies}
+          isLoading={isLoading}
+          handleSearchClick={handleSearchClick}
+          errorMovie={errorMovie}
+          checkboxChecked={checkboxChecked}
+          onCheckChange={onCheckChange}
+          searchInfo={searchInfo}
+          setSearchInfo={setSearchInfo}
+          onSaveClick={onSaveClick}
+          // onDeleteClick={handleDeleteClick}
+        ></ProtectedRoute>
+        <ProtectedRoute
+          exact
+          path="/saved-movies"
+          loggedIn={loggedIn}
+          component={SavedMovies}
+          onDeleteClick={handleDeleteClick}
+          savedMovies={savedMovies}
+          handleSearchClick={handleSearchClick}
+          isSaved={isSaved}
+        ></ProtectedRoute>
         <Route>
           <NotFoundPage />
         </Route>

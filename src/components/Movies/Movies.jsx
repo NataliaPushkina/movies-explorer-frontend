@@ -3,13 +3,36 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../Preloader/Preloader";
 
-function Movies({ onCheckButtonClick, movies, isLoading }) {
+function Movies({
+  onCheckButtonClick,
+  movies,
+  isLoading,
+  handleSearchClick,
+  errorMovie,
+  checkboxChecked,
+  onCheckChange,
+  searchInfo,
+  setSearchInfo,
+  onSaveClick,
+  onDeleteClick
+}) {
   return (
     <section className="movies">
-      <SearchForm></SearchForm>
+      <SearchForm
+        handleSearchClick={handleSearchClick}
+        checkboxChecked={checkboxChecked}
+        onCheckChange={onCheckChange}
+        searchInfo={searchInfo}
+        setSearchInfo={setSearchInfo}
+       />
       {isLoading ? <Preloader /> : null}
-      <MoviesCardList onCheckButtonClick={onCheckButtonClick} movies={movies} />
-      <button className="movies__button">Ещё</button>
+      <MoviesCardList
+        onCheckButtonClick={onCheckButtonClick}
+        movies={movies}
+        errorMovie={errorMovie}
+        onSaveClick={onSaveClick}
+        onDeleteClick={onDeleteClick}
+      />
     </section>
   );
 }

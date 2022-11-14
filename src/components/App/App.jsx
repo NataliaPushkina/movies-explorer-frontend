@@ -5,36 +5,43 @@ import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
-// import Movies from "../Movies/Movies";
-// import SavedMovies from "../SavedMovies/SavedMovies";
-// import Register from "../Register/Register";
-// import Profile from "../Profile/Profile";
-// import Login from "../Login/Login";
-// import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
-import ConfirmWindow from "../ConfirmWindow/ConfirmWindow";
 import * as mainApi from "../../utils/MainApi";
+import moviesApi from "../../utils/MoviesApi";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-
-import moviesList from "../../data.json";
+import { REG_EXP_RU, REG_EXP_EN } from "../../utils/constants";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isBurgerOpened, setIsBurgerOpened] = useState(false); // eslint-disable-next-line
-  const [userName, setUserName] = useState(""); // eslint-disable-next-line
-  const [userEmail, setUserEmail] = useState(""); // eslint-disable-next-line
-  const [isLoading, setIsLoading] = useState(false); // eslint-disable-next-line
-  const [currentUser, setCurrentUser] = useState({ name: "", email: "" }); // eslint-disable-next-line
-  const [movies, setMovies] = useState(moviesList); // eslint-disable-next-line
+  const [isBurgerOpened, setIsBurgerOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [registrationSuccess, setRegistrationSuccess] = useState(true);
   const [isInfoTooltipPopupOpened, setIsInfoTooltipPopupOpened] =
     useState(false);
-  const [isConfirmWindowOpened, setIsConfirmWindowOpened] = useState(false);
+  const [errorMovie, setErrorMovie] = useState("");
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
+  const [searchInfo, setSearchInfo] = useState("");
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const history = useHistory();
   let location = useLocation();
+
+  useEffect(() => {
+    mainApi
+      .getUserInfo()
+      .then((userData) => {
+        setLoggedIn(true);
+        setCurrentUser(userData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [loggedIn]);
 
   const handleBurgerOpen = () => {
     setIsBurgerOpened(!isBurgerOpened);
@@ -43,66 +50,9 @@ function App() {
   const infoTooltipOpen = () => {
     setIsInfoTooltipPopupOpened(!isInfoTooltipPopupOpened);
   };
-  // eslint-disable-next-line
-  const confirmWindowOpen = () => {
-    setIsConfirmWindowOpened(!isConfirmWindowOpened);
-  };
-
-  const handleRegister = (name, email, password) => {
-    // mainApi
-    //   .register(name, email, password)
-    //   .then(() => {
-    console.log(name, email, password);
-    setRegistrationSuccess(true);
-    history.push("/signin");
-    // })
-    // .catch((err) => {
-    //   setRegistrationSuccess(false);
-    //   console.log(err);
-    // })
-    // .finally(() => {
-    infoTooltipOpen();
-    // });
-  };
-
-  const handleLogin = (email, password) => {
-    // mainApi
-    //   .authorize(email, password)
-    //   .then((res) => {
-    setLoggedIn(true);
-    history.push("/movies");
-    // })
-    // .catch((err) => {
-    // setRegistrationSuccess(false);
-    //   infoTooltipOpen();
-    //   console.log(err);
-    // });
-  };
-
-  const handleLogout = () => {
-    mainApi
-      .logout()
-      .then((res) => {
-        setLoggedIn(false);
-        history.push("/signin");
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
-
-  const handleCheckButtonClick = (movie) => {
-    const isSaved = savedMovies.includes(movie);
-    console.log(isSaved);
-  };
-
-  const handleDeleteClick = (movie) => {
-    console.log("Deleted");
-  };
 
   const closeModalWindows = () => {
     setIsInfoTooltipPopupOpened(false);
-    setIsConfirmWindowOpened(false);
   };
 
   const handleOverlay = (e) => {
@@ -111,23 +61,234 @@ function App() {
     }
   };
 
-  const handleSubmitConfirm = (e) => {
-    console.log(e);
-  };
-
   useEffect(() => {
     function closeByEscape(evt) {
       if (evt.key === "Escape") {
         closeModalWindows();
       }
     }
-    if (isInfoTooltipPopupOpened || isConfirmWindowOpened) {
+    if (isInfoTooltipPopupOpened) {
       document.addEventListener("keydown", closeByEscape);
       return () => {
         document.removeEventListener("keydown", closeByEscape);
       };
     }
-  }, [isInfoTooltipPopupOpened, isConfirmWindowOpened]);
+  }, [isInfoTooltipPopupOpened]);
+
+  const handleRegister = (name, email, password) => {
+    mainApi
+      .register(name, email, password)
+      .then(() => {
+        console.log(name, email, password);
+        handleLogin(email, password);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleLogin = (email, password) => {
+    mainApi
+      .authorize(email, password)
+      .then((res) => {
+        setLoggedIn(true);
+        history.push("/movies");
+      })
+      .catch((err) => {
+        setRegistrationSuccess(false);
+        infoTooltipOpen();
+        console.log(err);
+      });
+  };
+
+  const handleLogout = () => {
+    mainApi
+      .logout()
+      .then((res) => {
+        localStorage.clear();
+        setLoggedIn(false);
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //РЕДАКТИРОВАНИЕ ПРОФИЛЯ
+  const handleUpdateUserInfo = (name, email) => {
+    mainApi
+      .updateUserInfo(name, email)
+      .then((userData) => {
+        setCurrentUser(userData);
+        setUpdateSuccess(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setUpdateSuccess(false);
+      })
+      .finally(() => {
+        infoTooltipOpen();
+      });
+  };
+
+  //ПОИСК ФИЛЬМОВ
+  const handleSearchClick = async (info) => {
+    localStorage.setItem("searchInfo", JSON.stringify(info));
+    setErrorMovie("");
+    const data = JSON.parse(localStorage.getItem("moviesList"));
+    if (!data) {
+      setIsLoading(true);
+      await moviesApi
+        .getCards()
+        .then((res) => {
+          localStorage.setItem("moviesList", JSON.stringify(res));
+          setMovies(res);
+          // console.log(res);
+        })
+        .catch((err) => {
+          setErrorMovie(
+            "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
+          );
+          console.log(errorMovie);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+    setErrorMovie("");
+    filterMovies(info);
+  };
+
+  //ПЕРЕКЛЮЧАТЕЛЬ ЧЕКБОКСА
+  const handleCheckChange = () => {
+    const info = JSON.parse(localStorage.getItem("searchInfo"));
+    setCheckboxChecked(!checkboxChecked);
+    localStorage.setItem("checkbox", JSON.stringify(!checkboxChecked));
+    filterMovies(info);
+    console.log("чекбокс, передаем", info);
+  };
+
+  //ФИЛЬТРАЦИЯ
+  const filterMovies = (info) => {
+    let result = [];
+    setErrorMovie("");
+    const data = JSON.parse(localStorage.getItem("moviesList"));
+    // let data;
+    // if (location.pathname = '/movies') {
+    //   data = JSON.parse(localStorage.getItem("moviesList"));
+    // } else if (location.pathname = '/saved-movies') {
+    //   data = savedMovies;
+    // }
+    const checkboxChecked = JSON.parse(localStorage.getItem("checkbox"));
+    console.log("распарсить дату при фильтрации:", data);
+    console.log("что ищем при фильтрации:", info);
+    console.log("состояние чекбокс пр фильтрации", checkboxChecked);
+    let infoRu;
+    let infoEn;
+    if (!info) {
+      setErrorMovie("Введите поисковый запрос");
+    } else {
+      if (REG_EXP_RU.test(info)) {
+        infoRu = info.toLowerCase();
+      } else if (REG_EXP_EN.test(info)) {
+        infoEn = info.toLowerCase();
+      }
+      console.log("регулярки", infoRu, infoEn);
+    }
+    if (result.length === 0) {
+      setErrorMovie("Ничего не найдено!");
+    }
+    if (checkboxChecked) {
+      result = data.filter(
+        (item) =>
+          (item.nameRU.toLowerCase().includes(infoRu) ||
+            item.nameEN.toLowerCase().includes(infoEn)) &&
+          item.duration <= 40
+      );
+    } else {
+      result = data.filter(
+        (item) =>
+          (item.nameRU.toLowerCase().includes(infoRu) ||
+            item.nameEN.toLowerCase().includes(infoEn)) &&
+          item.duration > 40
+      );
+    }
+    localStorage.setItem("foundedMovies", JSON.stringify(result));
+    setMovies(result);
+    console.log("filterMovie результат", result);
+  };
+
+  const toggleLike = (movie) => {
+    setIsSaved(movie.owner === currentUser._id);
+    if (isSaved) {
+      handleSaveClick(movie);
+    } else {
+      handleDeleteClick(movie);
+    }
+  }
+
+  // СОХРАНЕНИЕ ФИЛЬМА
+  const handleSaveClick = ({ country, director, duration, year, description, image, trailerLink, nameRU, nameEN,
+    thumbnail, movieId, _id, isSaved }) => {
+      if (!isSaved) {
+    mainApi
+      .saveMovie({
+        country, director, duration, year, description, image, trailerLink, nameRU, nameEN, thumbnail,
+        movieId, _id, isSaved
+      })
+      .then((res) => {
+        console.log(isSaved);
+        savedMovies.push(res);
+        setSavedMovies(savedMovies);
+        console.log('сохраненные фильмы', savedMovies);
+      }).catch((err) => {
+        console.log(err);
+      });
+    } else {
+      console.log('фильм уже сохранен');
+    }
+  };
+
+  // УДАЛЕНИЕ ИЗ СОХРАНЕННЫХ
+  const handleDeleteClick = (movie) => {
+    console.log(savedMovies, movie);
+    mainApi
+      .removeMovie(movie._id)
+      .then((res) => {
+        setSavedMovies((savedMovies) =>
+          savedMovies.filter((c) => (c._id !== movie._id ? res : null))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    const checkbox = localStorage.getItem("checkbox");
+    setCheckboxChecked(JSON.parse(checkbox));
+  }, []);
+
+  useEffect(() => {
+    const foundedMovies = localStorage.getItem("foundedMovies");
+    if (!foundedMovies) {
+      setMovies([]);
+    } else {
+      setMovies(JSON.parse(foundedMovies));
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   if (loggedIn) {
+  //   mainApi.getSavedMovies()
+  //     .then((res) => {
+  //       setSavedMovies(res.filter((movie) => movie.owner === currentUser._id));
+  //       setSavedMovies(res);
+  //     }).catch((err) => {
+  //       console.log(err);
+  //     });
+  //   }
+  // },[loggedIn, currentUser]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -141,9 +302,9 @@ function App() {
         ) : null}
 
         {location.pathname === "/" ||
-        location.pathname === "/movies" ||
-        location.pathname === "/saved-movies" ||
-        location.pathname === "/profile" ? (
+          location.pathname === "/movies" ||
+          location.pathname === "/saved-movies" ||
+          location.pathname === "/profile" ? (
           <Header
             loggedIn={loggedIn}
             isBurgerOpened={isBurgerOpened}
@@ -151,22 +312,28 @@ function App() {
           ></Header>
         ) : null}
         <Main
-        userName={userName}
-        userEmail={userEmail}
-        handleLogout={handleLogout}
-        handleLogin={handleLogin}
-        handleRegister={handleRegister}
-        infoTooltipOpen={infoTooltipOpen}
-        registrationSuccess={registrationSuccess}
-        handleCheckButtonClick={handleCheckButtonClick}
-        movies={movies}
-        isLoading={isLoading}
-        handleDeleteClick={handleDeleteClick}
-        >
-        </Main>
+          handleLogin={handleLogin}
+          handleRegister={handleRegister}
+          handleLogout={handleLogout}
+          infoTooltipOpen={infoTooltipOpen}
+          movies={movies}
+          isLoading={isLoading}
+          handleDeleteClick={handleDeleteClick}
+          handleSearchClick={handleSearchClick}
+          errorMovie={errorMovie}
+          checkboxChecked={checkboxChecked}
+          onCheckChange={handleCheckChange}
+          searchInfo={searchInfo}
+          setSearchInfo={setSearchInfo}
+          loggedIn={loggedIn}
+          onUpdateInfo={handleUpdateUserInfo}
+          onSaveClick={handleSaveClick}
+          savedMovies={savedMovies}
+          isSaved={isSaved}
+        ></Main>
         {location.pathname === "/" ||
-        location.pathname === "/movies" ||
-        location.pathname === "/saved-movies" ? (
+          location.pathname === "/movies" ||
+          location.pathname === "/saved-movies" ? (
           <Footer />
         ) : null}
       </div>
@@ -174,12 +341,8 @@ function App() {
         isInfoTooltipPopupOpened={isInfoTooltipPopupOpened}
         onClose={closeModalWindows}
         onOverlay={handleOverlay}
-      />
-      <ConfirmWindow
-        isConfirmWindowOpened={isConfirmWindowOpened}
-        onClose={closeModalWindows}
-        onOverlay={handleOverlay}
-        onSubmitConfirm={handleSubmitConfirm}
+        registrationSuccess={registrationSuccess}
+        updateSuccess={updateSuccess}
       />
     </CurrentUserContext.Provider>
   );

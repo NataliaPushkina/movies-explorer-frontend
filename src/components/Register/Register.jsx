@@ -14,8 +14,9 @@ function Register({ onRegister }) {
 
   const handleChangeName = (e) => {
     setName(e.target.value);
-    if (e.target.value.length < 2 || e.target.value.length > 30) {
-      setNameError('Допустимое количество символов - от 2 до 30');
+    const re = /^[a-zа-яё\s]+$/;
+    if (!re.test(String(e.target.value).toLowerCase())) {
+      setNameError('Поле может содержать только символы кириллицы, латиницы и пробел');
       if (!e.target.value) {
         setNameError('Поле name обязательное');
       }

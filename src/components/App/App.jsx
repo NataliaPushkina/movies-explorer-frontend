@@ -26,7 +26,7 @@ function App() {
   const [searchInfo, setSearchInfo] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   const history = useHistory();
   let location = useLocation();
@@ -105,6 +105,7 @@ function App() {
     mainApi
       .logout()
       .then((res) => {
+        console.log(res);
         localStorage.clear();
         setLoggedIn(false);
         history.push("/");
@@ -143,7 +144,6 @@ function App() {
         .then((res) => {
           localStorage.setItem("moviesList", JSON.stringify(res));
           setMovies(res);
-          // console.log(res);
         })
         .catch((err) => {
           setErrorMovie(
@@ -155,7 +155,6 @@ function App() {
           setIsLoading(false);
         });
     }
-    setErrorMovie("");
     filterMovies(info);
   };
 
@@ -173,12 +172,6 @@ function App() {
     let result = [];
     setErrorMovie("");
     const data = JSON.parse(localStorage.getItem("moviesList"));
-    // let data;
-    // if (location.pathname = '/movies') {
-    //   data = JSON.parse(localStorage.getItem("moviesList"));
-    // } else if (location.pathname = '/saved-movies') {
-    //   data = savedMovies;
-    // }
     const checkboxChecked = JSON.parse(localStorage.getItem("checkbox"));
     console.log("распарсить дату при фильтрации:", data);
     console.log("что ищем при фильтрации:", info);
@@ -193,10 +186,6 @@ function App() {
       } else if (REG_EXP_EN.test(info)) {
         infoEn = info.toLowerCase();
       }
-      console.log("регулярки", infoRu, infoEn);
-    }
-    if (result.length === 0) {
-      setErrorMovie("Ничего не найдено!");
     }
     if (checkboxChecked) {
       result = data.filter(
@@ -213,48 +202,61 @@ function App() {
           item.duration > 40
       );
     }
+    if (result.length === 0) {
+      setErrorMovie("Ничего не найдено!");
+    }
     localStorage.setItem("foundedMovies", JSON.stringify(result));
     setMovies(result);
     console.log("filterMovie результат", result);
   };
 
   const toggleLike = (movie) => {
-    setIsSaved(movie.owner === currentUser._id);
-    if (isSaved) {
+    setIsLiked(!isLiked);
+    console.log(movie, isLiked);
+    if (!isLiked) {
       handleSaveClick(movie);
     } else {
-      handleDeleteClick(movie);
+      const movieId = movie.id || movie.movieId;
+      const selectedMovie = savedMovies.find((i) => i.movieId === movieId);
+      handleDeleteClick(selectedMovie);
     }
-  }
+  };
 
   // СОХРАНЕНИЕ ФИЛЬМА
-  const handleSaveClick = ({ country, director, duration, year, description, image, trailerLink, nameRU, nameEN,
-    thumbnail, movieId, _id, isSaved }) => {
-      if (!isSaved) {
+  const handleSaveClick = (movie) => {
     mainApi
       .saveMovie({
-        country, director, duration, year, description, image, trailerLink, nameRU, nameEN, thumbnail,
-        movieId, _id, isSaved
+        country: movie.country,
+        description: movie.description,
+        director: movie.director,
+        duration: movie.duration,
+        image: `https://api.nomoreparties.co${movie.image.url}`,
+        movieId: movie.id,
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+        thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+        trailerLink: movie.trailerLink,
+        year: movie.year,
+        owner: currentUser._id,
+        isLiked: true,
       })
       .then((res) => {
-        console.log(isSaved);
         savedMovies.push(res);
         setSavedMovies(savedMovies);
-        console.log('сохраненные фильмы', savedMovies);
-      }).catch((err) => {
+        localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+        console.log("сохраненные фильмы", savedMovies);
+      })
+      .catch((err) => {
         console.log(err);
       });
-    } else {
-      console.log('фильм уже сохранен');
-    }
   };
 
   // УДАЛЕНИЕ ИЗ СОХРАНЕННЫХ
   const handleDeleteClick = (movie) => {
-    console.log(savedMovies, movie);
     mainApi
       .removeMovie(movie._id)
       .then((res) => {
+        console.log(res);
         setSavedMovies((savedMovies) =>
           savedMovies.filter((c) => (c._id !== movie._id ? res : null))
         );
@@ -266,7 +268,9 @@ function App() {
 
   useEffect(() => {
     const checkbox = localStorage.getItem("checkbox");
-    setCheckboxChecked(JSON.parse(checkbox));
+    if (checkbox !== null) {
+      setCheckboxChecked(JSON.parse(checkbox));
+    }
   }, []);
 
   useEffect(() => {
@@ -278,17 +282,16 @@ function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (loggedIn) {
-  //   mainApi.getSavedMovies()
-  //     .then((res) => {
-  //       setSavedMovies(res.filter((movie) => movie.owner === currentUser._id));
-  //       setSavedMovies(res);
-  //     }).catch((err) => {
-  //       console.log(err);
-  //     });
-  //   }
-  // },[loggedIn, currentUser]);
+  useEffect(() => {
+    if (currentUser) {
+      mainApi.getSavedMovies()
+      .then((res) => {
+        setSavedMovies(res.filter(
+          (item) => item.owner._id === currentUser._id
+        ));
+      })
+      }
+  },[currentUser]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -302,9 +305,9 @@ function App() {
         ) : null}
 
         {location.pathname === "/" ||
-          location.pathname === "/movies" ||
-          location.pathname === "/saved-movies" ||
-          location.pathname === "/profile" ? (
+        location.pathname === "/movies" ||
+        location.pathname === "/saved-movies" ||
+        location.pathname === "/profile" ? (
           <Header
             loggedIn={loggedIn}
             isBurgerOpened={isBurgerOpened}
@@ -329,11 +332,13 @@ function App() {
           onUpdateInfo={handleUpdateUserInfo}
           onSaveClick={handleSaveClick}
           savedMovies={savedMovies}
-          isSaved={isSaved}
+          isLiked={isLiked}
+          handleCheckButtonClick={toggleLike}
+          currentUser={currentUser}
         ></Main>
         {location.pathname === "/" ||
-          location.pathname === "/movies" ||
-          location.pathname === "/saved-movies" ? (
+        location.pathname === "/movies" ||
+        location.pathname === "/saved-movies" ? (
           <Footer />
         ) : null}
       </div>

@@ -8,8 +8,8 @@ function MoviesCardList({
   errorMovie,
   onSaveClick,
   onDeleteClick,
-
-  ...props
+  isLiked,
+  onDeleteLikeClick
 }) {
   const pagination = usePagination({
     count: movies.length,
@@ -24,7 +24,7 @@ function MoviesCardList({
           .map((movie) => {
             return (
               <MovieCard
-                key={movie.id}
+                key={movie.id || movie._id}
                 movie={movie}
                 name={movie.nameRU}
                 trailerLink={movie.trailerLink}
@@ -32,18 +32,12 @@ function MoviesCardList({
                 onCheckButtonClick={onCheckButtonClick}
                 onSaveClick={onSaveClick}
                 onDeleteClick={onDeleteClick}
+                isLiked={isLiked}
+                onDeleteLikeClick={onDeleteLikeClick}
               />
             );
-          }
-          )}
+          })}
       </ul>
-
-      {/* <button
-        className="movies-card-list__button"
-        onClick={pagination.showNextCards}
-      >
-        Ещё
-      </button> */}
 
       <button
         className={`${

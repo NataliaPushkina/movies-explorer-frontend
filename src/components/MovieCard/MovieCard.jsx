@@ -8,39 +8,22 @@ function MovieCard({
   name,
   duration,
   trailerLink,
-  onSaveClick,
   onDeleteClick,
-  ...props
+  onCheckButtonClick,
+  // isLiked,
+  onDeleteLikeClick,
 }) {
   const [isLiked, setIsLiked] = useState(false);
   // const [isSaved, setIsSaved] = useState(false);
-  const currentUser = useContext(CurrentUserContext);
-  const isSaved = movie.owner === currentUser._id;
+  // const currentUser = useContext(CurrentUserContext);
+  // const isSaved = movie.owner === currentUser._id;
 
-    // const isLiked = movie.filter((i) => i.isliked === true);
+  // const isLiked = movie.filter((i) => i.isliked === true);
   let location = useLocation();
 
-  const handleLike = (movie) => {
+  const onClickButton = (movie) => {
     setIsLiked(!isLiked);
-    // if (!isSaved) {
-    onSaveClick({
-      country: movie.country,
-      description: movie.description,
-      director: movie.director,
-      duration: movie.duration,
-      image: `https://api.nomoreparties.co${movie.image.url}`,
-      movieId: movie.id,
-      nameRU: movie.nameRU,
-      nameEN: movie.nameEN,
-      thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
-      trailerLink: movie.trailerLink,
-      year: movie.year,
-      owner: currentUser._id,
-      isSaved: isSaved
-    });
-  // } else {
-  //   console.log('фильм уже сохранен');
-  // }
+    onCheckButtonClick(movie, isLiked);
   };
 
   const onDelete = (movie) => {
@@ -61,33 +44,35 @@ function MovieCard({
         className="card__item-link"
       >
         {location.pathname === "/movies" ? (
-        <img
-          className="card__image"
-          max-width="360"
-          height="200"
-          controls
-          src={`https://api.nomoreparties.co${movie.image.url}`}
-          alt={name}
-        />): null}
+          <img
+            className="card__image"
+            max-width="360"
+            height="200"
+            controls
+            src={`https://api.nomoreparties.co${movie.image.url}`}
+            alt={name}
+          />
+        ) : null}
 
         {location.pathname === "/saved-movies" ? (
-        <img
-          className="card__image"
-          max-width="360"
-          height="200"
-          controls
-          src={movie.image}
-          alt={name}
-        />): null
-        }
+          <img
+            className="card__image"
+            max-width="360"
+            height="200"
+            controls
+            src={movie.image}
+            alt={name}
+          />
+        ) : null}
       </a>
 
       {location.pathname === "/movies" ? (
         <button
           type="button"
-          className={`${isLiked ? "card__check-button_active" : "card__check-button"
-            }`}
-          onClick={() => handleLike(movie)}
+          className={`${
+            isLiked ? "card__check-button_active" : "card__check-button"
+          }`}
+          onClick={() => onClickButton(movie)}
         ></button>
       ) : null}
       {location.pathname === "/saved-movies" ? (

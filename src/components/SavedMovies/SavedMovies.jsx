@@ -11,6 +11,7 @@ function SavedMovies({
   onCheckChange,
   searchInfo,
   setSearchInfo,
+  onCheckButtonClick
 }) {
   return (
     <section className="saved-movies">
@@ -21,11 +22,12 @@ function SavedMovies({
         searchInfo={searchInfo}
         setSearchInfo={setSearchInfo}
       />
-      {savedMovies.length !== 0 ? (
+      {savedMovies.length > 0 ? (
         <MoviesCardList
           onDeleteClick={onDeleteClick}
           movies={savedMovies}
-          isLiked={isLiked}
+          isLiked={true}
+          onCheckButtonClick={onCheckButtonClick}
         />
       ) : (
         <h1 className="saved-movies__text">Нет сохранённых фильмов!</h1>

@@ -34,7 +34,9 @@ function Main({
   loggedIn,
   onUpdateInfo,
   onSaveClick,
-  isSaved,
+  isLiked,
+  onDeleteLikeClick,
+  // currentUser,
 }) {
   const aboutRef = useRef(null);
 
@@ -86,7 +88,8 @@ function Main({
           searchInfo={searchInfo}
           setSearchInfo={setSearchInfo}
           onSaveClick={onSaveClick}
-          // onDeleteClick={handleDeleteClick}
+          isLiked={isLiked}
+          onDeleteLikeClick={onDeleteLikeClick}
         ></ProtectedRoute>
         <ProtectedRoute
           exact
@@ -96,7 +99,7 @@ function Main({
           onDeleteClick={handleDeleteClick}
           savedMovies={savedMovies}
           handleSearchClick={handleSearchClick}
-          isSaved={isSaved}
+          isLiked={isLiked}
         ></ProtectedRoute>
         <Route>
           <NotFoundPage />

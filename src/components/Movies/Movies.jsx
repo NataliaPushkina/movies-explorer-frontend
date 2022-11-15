@@ -14,7 +14,8 @@ function Movies({
   searchInfo,
   setSearchInfo,
   onSaveClick,
-  onDeleteClick
+  onDeleteClick,
+  onDeleteLikeClick
 }) {
   return (
     <section className="movies">
@@ -32,6 +33,8 @@ function Movies({
         errorMovie={errorMovie}
         onSaveClick={onSaveClick}
         onDeleteClick={onDeleteClick}
+        isLiked={false}
+        onDeleteLikeClick={onDeleteLikeClick}
       />
     </section>
   );

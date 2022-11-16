@@ -34,9 +34,11 @@ function Main({
   loggedIn,
   onUpdateInfo,
   onSaveClick,
-  isLiked,
-  onDeleteLikeClick,
-  // currentUser,
+  isSaved,
+  isReady,
+  handleSearchSavedMovies,
+  handleCheckSaveChange,
+  currentUser,
 }) {
   const aboutRef = useRef(null);
 
@@ -53,6 +55,7 @@ function Main({
           component={Profile}
           onLogout={handleLogout}
           onUpdateInfo={onUpdateInfo}
+          currentUser={currentUser}
         ></ProtectedRoute>
         <Route exact path="/signin">
           <Login onLogin={handleLogin} />
@@ -88,8 +91,7 @@ function Main({
           searchInfo={searchInfo}
           setSearchInfo={setSearchInfo}
           onSaveClick={onSaveClick}
-          isLiked={isLiked}
-          onDeleteLikeClick={onDeleteLikeClick}
+          isSaved={isSaved}
         ></ProtectedRoute>
         <ProtectedRoute
           exact
@@ -98,8 +100,12 @@ function Main({
           component={SavedMovies}
           onDeleteClick={handleDeleteClick}
           savedMovies={savedMovies}
-          handleSearchClick={handleSearchClick}
-          isLiked={isLiked}
+          handleSearchClick={handleSearchSavedMovies}
+          isSaved={isSaved}
+          searchInfo={searchInfo}
+          setSearchInfo={setSearchInfo}
+          checkboxChecked={checkboxChecked}
+          onCheckChange={handleCheckSaveChange}
         ></ProtectedRoute>
         <Route>
           <NotFoundPage />

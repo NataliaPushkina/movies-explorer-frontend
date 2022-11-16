@@ -1,5 +1,5 @@
 export const BASE_URL = "https://api.pushkina.nomoredomains.icu";
-// export const BASE_URL = 'http://localhost:3000';
+// export const BASE_URL = "http://localhost:3000";
 
 const getResponseData = (res) => {
   if (!res.ok) {
@@ -55,12 +55,36 @@ export const updateUserInfo = (name, email) => {
   }).then((response) => getResponseData(response));
 };
 
-export const saveMovie = ({ country, director, duration, year, description, image, trailerLink, nameRU, nameEN, thumbnail, movieId }) => {
+export const saveMovie = ({
+  country,
+  director,
+  duration,
+  year,
+  description,
+  image,
+  trailerLink,
+  nameRU,
+  nameEN,
+  thumbnail,
+  movieId,
+}) => {
   return fetch(`${BASE_URL}/movies`, {
     method: "POST",
     credentials: "include",
     headers,
-    body: JSON.stringify({ country, director, duration, year, description, image, trailerLink, nameRU, nameEN, thumbnail, movieId }),
+    body: JSON.stringify({
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      nameRU,
+      nameEN,
+      thumbnail,
+      movieId,
+    }),
   }).then((response) => getResponseData(response));
 };
 

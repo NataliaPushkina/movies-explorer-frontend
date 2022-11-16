@@ -6,8 +6,8 @@ import "./Profile.css";
 function Profile({ onLogout, onUpdateInfo }) {
   const currentUser = useContext(CurrentUserContext);
   const [isEditButtonActive, setIsEditButtonActive] = useState(false);
-  const [name, setName] = useState(currentUser.name);
-  const [email, setEmail] = useState(currentUser.email);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [isValid, setIsValid] = useState(false);
@@ -17,6 +17,7 @@ function Profile({ onLogout, onUpdateInfo }) {
   const onEditBtnClick = () => {
     inputRef.current.focus();
     setIsEditButtonActive(!isEditButtonActive);
+    console.log(currentUser);
   };
 
   const handleChangeName = (e) => {
@@ -64,11 +65,19 @@ function Profile({ onLogout, onUpdateInfo }) {
     }
   }, [nameError, emailError]);
 
+  useEffect(() => {
+    if (currentUser) {
+      setName(currentUser.name);
+      setEmail(currentUser.email);
+    }
+  }, [currentUser]);
+
+
   return (
     <section className="profile">
       <div className="profile-container">
-        <h2 className="profile__title">Привет, {currentUser.name}</h2>
-        <form className="profile__form" onSubmit={handleSubmit}>
+        <h2 className="profile__title">Привет, {name}</h2>
+        <form className="profile__form" noValidate onSubmit={handleSubmit}>
           <fieldset className="profile_input-container">
             <label className="profile__label">Имя</label>
             <input

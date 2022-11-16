@@ -3,7 +3,6 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 
 function SavedMovies({
-  isLiked,
   onDeleteClick,
   savedMovies,
   handleSearchClick,
@@ -11,7 +10,8 @@ function SavedMovies({
   onCheckChange,
   searchInfo,
   setSearchInfo,
-  onCheckButtonClick
+  onCheckButtonClick,
+  isSaved,
 }) {
   return (
     <section className="saved-movies">
@@ -26,7 +26,7 @@ function SavedMovies({
         <MoviesCardList
           onDeleteClick={onDeleteClick}
           movies={savedMovies}
-          isLiked={true}
+          isSaved={isSaved}
           onCheckButtonClick={onCheckButtonClick}
         />
       ) : (

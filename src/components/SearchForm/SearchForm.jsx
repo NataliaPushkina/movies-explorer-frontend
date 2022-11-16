@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
-function SearchForm({ handleSearchClick, checkboxChecked, onCheckChange, searchInfo, setSearchInfo }) {
+function SearchForm({
+  handleSearchClick,
+  checkboxChecked,
+  onCheckChange,
+  searchInfo,
+  setSearchInfo,
+}) {
   const [searchInfoError, setSearchInfoError] = useState("");
   const [formValid, setFormValid] = useState(false);
 
@@ -17,17 +23,17 @@ function SearchForm({ handleSearchClick, checkboxChecked, onCheckChange, searchI
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem('searchInfo', JSON.stringify(searchInfo));
+    localStorage.setItem("searchInfo", JSON.stringify(searchInfo));
     handleSearchClick(searchInfo);
-  }
+  };
 
   useEffect(() => {
-    if (!searchInfoError) {
+    if (searchInfo && !searchInfoError) {
       setFormValid(true);
     } else {
       setFormValid(false);
     }
-  }, [searchInfoError]);
+  }, [searchInfo, searchInfoError]);
 
   return (
     <section className="section__search-form">
@@ -41,20 +47,23 @@ function SearchForm({ handleSearchClick, checkboxChecked, onCheckChange, searchI
             name="search-info"
             id="search-info"
             minLength="2"
-            value={searchInfo || ''}
+            value={searchInfo || ""}
             onChange={(e) => handleChange(e)}
           ></input>
-          <button type="submit" className="button search-form__button" disabled={!formValid}></button>
+          <button
+            type="submit"
+            className="button search-form__button"
+            disabled={!formValid}
+          ></button>
         </div>
         <span className="input__error search-info-error">
           {searchInfoError}
         </span>
       </form>
       <FilterCheckbox
-      checkboxChecked={checkboxChecked}
-      onCheckChange={onCheckChange}
-      >
-      </FilterCheckbox>
+        checkboxChecked={checkboxChecked}
+        onCheckChange={onCheckChange}
+      ></FilterCheckbox>
       <div className="search-form__line"></div>
     </section>
   );

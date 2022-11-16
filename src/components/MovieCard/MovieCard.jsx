@@ -1,6 +1,5 @@
-import { useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./MovieCard.css";
 
 function MovieCard({
@@ -10,26 +9,22 @@ function MovieCard({
   trailerLink,
   onDeleteClick,
   onCheckButtonClick,
-  // isLiked,
-  onDeleteLikeClick,
+  isSaved,
 }) {
-  const [isLiked, setIsLiked] = useState(false);
-  // const [isSaved, setIsSaved] = useState(false);
-  // const currentUser = useContext(CurrentUserContext);
-  // const isSaved = movie.owner === currentUser._id;
-
-  // const isLiked = movie.filter((i) => i.isliked === true);
+  const [like, setLike] = useState(false);
   let location = useLocation();
 
   const onClickButton = (movie) => {
-    setIsLiked(!isLiked);
-    onCheckButtonClick(movie, isLiked);
+    onCheckButtonClick(movie, like);
   };
 
   const onDelete = (movie) => {
-    console.log(movie);
     onDeleteClick(movie);
   };
+
+  useEffect(() => {
+    setLike(isSaved(movie));
+  }, [isSaved, movie]);
 
   return (
     <li className="card">
@@ -70,7 +65,7 @@ function MovieCard({
         <button
           type="button"
           className={`${
-            isLiked ? "card__check-button_active" : "card__check-button"
+            like ? "card__check-button_active" : "card__check-button"
           }`}
           onClick={() => onClickButton(movie)}
         ></button>

@@ -8,8 +8,7 @@ function MoviesCardList({
   errorMovie,
   onSaveClick,
   onDeleteClick,
-  isLiked,
-  onDeleteLikeClick
+  isSaved,
 }) {
   const pagination = usePagination({
     count: movies.length,
@@ -32,23 +31,23 @@ function MoviesCardList({
                 onCheckButtonClick={onCheckButtonClick}
                 onSaveClick={onSaveClick}
                 onDeleteClick={onDeleteClick}
-                isLiked={isLiked}
-                onDeleteLikeClick={onDeleteLikeClick}
+                isSaved={isSaved}
               />
             );
           })}
       </ul>
 
-      <button
-        className={`${
-          movies.length > pagination.lastIndex + pagination.contentPerPage
-            ? "movies-card-list__button"
-            : "movies-card-list__button_hidden"
-        }`}
-        onClick={pagination.showNextCards}
-      >
-        Ещё
-      </button>
+        <button
+          className={`${
+            movies.length > pagination.lastIndex + pagination.contentPerPage
+              ? "movies-card-list__button"
+              : "movies-card-list__button_hidden"
+          }`}
+          onClick={pagination.showNextCards}
+        >
+          Ещё
+        </button>
+
     </section>
   );
 }

@@ -15,7 +15,7 @@ function Movies({
   setSearchInfo,
   onSaveClick,
   onDeleteClick,
-  onDeleteLikeClick
+  isSaved,
 }) {
   return (
     <section className="movies">
@@ -25,7 +25,7 @@ function Movies({
         onCheckChange={onCheckChange}
         searchInfo={searchInfo}
         setSearchInfo={setSearchInfo}
-       />
+      />
       {isLoading ? <Preloader /> : null}
       <MoviesCardList
         onCheckButtonClick={onCheckButtonClick}
@@ -33,8 +33,7 @@ function Movies({
         errorMovie={errorMovie}
         onSaveClick={onSaveClick}
         onDeleteClick={onDeleteClick}
-        isLiked={false}
-        onDeleteLikeClick={onDeleteLikeClick}
+        isSaved={isSaved}
       />
     </section>
   );

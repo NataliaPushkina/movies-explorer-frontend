@@ -342,6 +342,11 @@ function App() {
   }, [location]);
 
   useEffect(() => {
+    const findedMovies = JSON.parse(localStorage.getItem("findedMovies"));
+    setMovies(findedMovies);
+  }, []);
+
+  useEffect(() => {
     if (location.pathname === "/movies") {
       const searchInfo = localStorage.getItem("searchInfo");
       setSearchInfo(JSON.parse(searchInfo));
@@ -359,7 +364,8 @@ function App() {
             (item) => item.owner === currentUser._id
           );
           setSavedMovies(savedMoviesList);
-          console.log('сохранённые', savedMovies);
+          //
+          console.log("сохранённые", savedMoviesList);
         })
         .catch((err) => {
           console.log(err);

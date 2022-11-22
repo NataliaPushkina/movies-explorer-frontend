@@ -38,7 +38,7 @@ function MoviesCardList({
 
       <button
         className={`${
-          movies.length >= pagination.lastIndex + pagination.contentPerPage
+          movies.length >= pagination.lastIndex
             ? "movies-card-list__button"
             : "movies-card-list__button_hidden"
         }`}

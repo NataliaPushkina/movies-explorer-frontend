@@ -10,9 +10,7 @@ function MoviesCardList({
   isSaved,
 }) {
 
-  const pagination = usePagination({
-    count: movies.length,
-  });
+  const pagination = usePagination();
 
   return (
     <section className="section__movies-card-list">

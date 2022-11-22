@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-const usePagination = ({ count }) => {
+const usePagination = () => {
   const firstIndex = 0;
   const screenWidth = window.innerWidth;
   const [contentPerPage, setContentPerPage] = useState(() => {

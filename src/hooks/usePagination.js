@@ -41,7 +41,7 @@ const usePagination = ({ count }) => {
       }
     };
       window.addEventListener("resize", function () {
-        setTimeout(setSize, 500);
+        setTimeout(setSize, 1000);
     });
       return () => {
         window.removeEventListener("resize", setSize);

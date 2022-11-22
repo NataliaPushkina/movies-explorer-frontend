@@ -26,27 +26,25 @@ function App() {
   const [searchInfo, setSearchInfo] = useState("");
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
 
   const history = useHistory();
   let location = useLocation();
 
   useEffect(() => {
     const path = location.pathname;
-      mainApi
+    mainApi
       .getUserInfo()
       .then((userData) => {
         if (userData) {
           setLoggedIn(true);
           setCurrentUser(userData);
+          console.log(userData);
           history.push(path);
         }
       })
       .catch((err) => {
         localStorage.clear();
         setLoggedIn(false);
-        setIsBurgerOpened(false);
-        setIsLoading(false);
         setCurrentUser(null);
         setMovies([]);
         setSavedMovies([]);
@@ -180,9 +178,27 @@ function App() {
     }
     await filterData(data, info);
     setMovies(filterData(data, info));
+    localStorage.setItem(
+      "findedMovies",
+      JSON.stringify(filterData(data, info))
+    );
   };
 
   const handleSearchSavedMovies = (info) => {
+    mainApi
+      .getSavedMovies()
+      .then((res) => {
+        const savedMoviesList = res.filter(
+          (item) => item.owner === currentUser._id
+        );
+        filterData(savedMoviesList, info);
+        setSavedMovies(filterData(savedMoviesList, info));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    console.log(savedMovies);
     filterData(savedMovies, info);
     setSavedMovies(filterData(savedMovies, info));
   };
@@ -195,14 +211,28 @@ function App() {
     const data = JSON.parse(localStorage.getItem("moviesList"));
     filterData(data, info);
     setMovies(filterData(data, info));
+    localStorage.setItem(
+      "findedMovies",
+      JSON.stringify(filterData(data, info))
+    );
   };
 
   const handleCheckSaveChange = () => {
     const info = JSON.parse(localStorage.getItem("searchInfo"));
     setCheckboxChecked(!checkboxChecked);
-    localStorage.setItem("checkbox", JSON.stringify(checkboxChecked));
-    filterData(savedMovies, info);
-    setMovies(filterData(savedMovies, info));
+    localStorage.setItem("checkbox", JSON.stringify(!checkboxChecked));
+    mainApi
+      .getSavedMovies()
+      .then((res) => {
+        const savedMoviesList = res.filter(
+          (item) => item.owner === currentUser._id
+        );
+        filterData(savedMoviesList, info);
+        setSavedMovies(filterData(savedMoviesList, info));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   //ФИЛЬТРАЦИЯ ДАННЫХ
@@ -212,6 +242,9 @@ function App() {
     const checkboxChecked = JSON.parse(localStorage.getItem("checkbox"));
     let infoRu;
     let infoEn;
+    console.log("info", info);
+    console.log("data", data);
+    console.log("checkbox", checkboxChecked);
     if (!info) {
       setErrorMovie("Введите поисковый запрос");
     } else {
@@ -239,16 +272,8 @@ function App() {
     if (result.length === 0) {
       setErrorMovie("Ничего не найдено!");
     }
+    console.log("filterData", result);
     return result;
-  };
-
-  const toggleLike = (movie) => {
-    setIsLiked(!isLiked);
-    if (isLiked) {
-      handleSaveClick(movie);
-    } else {
-      handleDeleteClick(movie);
-    }
   };
 
   // СОХРАНЕНИЕ ФИЛЬМА
@@ -270,9 +295,7 @@ function App() {
         isLiked: true,
       })
       .then((res) => {
-        savedMovies.push(res);
-        setSavedMovies(savedMovies);
-        localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
+        setSavedMovies([res, ...savedMovies]);
       })
       .catch((err) => {
         console.log(err);
@@ -308,29 +331,41 @@ function App() {
   };
 
   useEffect(() => {
-    const checkbox = localStorage.getItem("checkbox");
-    if (checkbox !== null) {
-      setCheckboxChecked(JSON.parse(checkbox));
+    const path = location.pathname;
+    const checkbox = JSON.parse(localStorage.getItem("checkbox"));
+    if (path === "/saved-movies" && checkbox) {
+      console.log(path);
+      console.log(checkbox);
+      setCheckboxChecked(!checkbox);
+      localStorage.setItem("checkbox", JSON.stringify(!checkbox));
     }
-  }, []);
+  }, [location]);
 
   useEffect(() => {
-    const searchInfo = localStorage.getItem("searchInfo");
-    setCheckboxChecked(JSON.parse(searchInfo));
-  }, []);
+    if (location.pathname === "/movies") {
+      const searchInfo = localStorage.getItem("searchInfo");
+      setSearchInfo(JSON.parse(searchInfo));
+    } else {
+      setSearchInfo("");
+    }
+  }, [location]);
 
   useEffect(() => {
-    if (loggedIn) {
+    if (currentUser) {
       mainApi
         .getSavedMovies()
         .then((res) => {
-          setSavedMovies(res);
+          const savedMoviesList = res.filter(
+            (item) => item.owner === currentUser._id
+          );
+          setSavedMovies(savedMoviesList);
+          console.log('сохранённые', savedMovies);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [loggedIn]);
+  }, [currentUser]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -372,7 +407,6 @@ function App() {
           onSaveClick={handleSaveClick}
           savedMovies={savedMovies}
           isSaved={checkIsSaved}
-          handleCheckButtonClick={toggleLike}
           currentUser={currentUser}
           handleSearchSavedMovies={handleSearchSavedMovies}
           handleCheckSaveChange={handleCheckSaveChange}

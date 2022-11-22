@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import "./Main.css";
 import Promo from "../Promo/Promo";
 import AboutProject from "../AboutProject/AboutProject";
@@ -20,7 +20,6 @@ function Main({
   handleRegister,
   infoTooltipOpen,
   registrationSuccess,
-  handleCheckButtonClick,
   movies,
   savedMovies,
   isLoading,
@@ -35,7 +34,6 @@ function Main({
   onUpdateInfo,
   onSaveClick,
   isSaved,
-  isReady,
   handleSearchSavedMovies,
   handleCheckSaveChange,
   currentUser,
@@ -58,14 +56,18 @@ function Main({
           currentUser={currentUser}
         ></ProtectedRoute>
         <Route exact path="/signin">
-          <Login onLogin={handleLogin} />
+          {loggedIn ? <Redirect to="/" /> : <Login onLogin={handleLogin} />}
         </Route>
         <Route exact path="/signup">
-          <Register
-            onRegister={handleRegister}
-            onInfoTooltipOpen={infoTooltipOpen}
-            registrationSuccess={registrationSuccess}
-          />
+          {loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Register
+              onRegister={handleRegister}
+              onInfoTooltipOpen={infoTooltipOpen}
+              registrationSuccess={registrationSuccess}
+            />
+          )}
         </Route>
         <Route exact path="/">
           <Promo handleScrollClick={handleScrollClick} />
@@ -81,7 +83,6 @@ function Main({
           path="/movies"
           loggedIn={loggedIn}
           component={Movies}
-          onCheckButtonClick={handleCheckButtonClick}
           movies={movies}
           isLoading={isLoading}
           handleSearchClick={handleSearchClick}
@@ -92,6 +93,7 @@ function Main({
           setSearchInfo={setSearchInfo}
           onSaveClick={onSaveClick}
           isSaved={isSaved}
+          onDeleteClick={handleDeleteClick}
         ></ProtectedRoute>
         <ProtectedRoute
           exact

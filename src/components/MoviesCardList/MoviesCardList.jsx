@@ -3,13 +3,13 @@ import "./MoviesCardList.css";
 import MovieCard from "../MovieCard/MovieCard";
 
 function MoviesCardList({
-  onCheckButtonClick,
   movies,
   errorMovie,
   onSaveClick,
   onDeleteClick,
   isSaved,
 }) {
+
   const pagination = usePagination({
     count: movies.length,
   });
@@ -28,7 +28,6 @@ function MoviesCardList({
                 name={movie.nameRU}
                 trailerLink={movie.trailerLink}
                 duration={movie.duration}
-                onCheckButtonClick={onCheckButtonClick}
                 onSaveClick={onSaveClick}
                 onDeleteClick={onDeleteClick}
                 isSaved={isSaved}
@@ -37,17 +36,16 @@ function MoviesCardList({
           })}
       </ul>
 
-        <button
-          className={`${
-            movies.length > pagination.lastIndex + pagination.contentPerPage
-              ? "movies-card-list__button"
-              : "movies-card-list__button_hidden"
-          }`}
-          onClick={pagination.showNextCards}
-        >
-          Ещё
-        </button>
-
+      <button
+        className={`${
+          movies.length >= pagination.lastIndex + pagination.contentPerPage
+            ? "movies-card-list__button"
+            : "movies-card-list__button_hidden"
+        }`}
+        onClick={pagination.showNextCards}
+      >
+        Ещё
+      </button>
     </section>
   );
 }

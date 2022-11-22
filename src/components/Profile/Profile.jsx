@@ -17,7 +17,6 @@ function Profile({ onLogout, onUpdateInfo }) {
   const onEditBtnClick = () => {
     inputRef.current.focus();
     setIsEditButtonActive(!isEditButtonActive);
-    console.log(currentUser);
   };
 
   const handleChangeName = (e) => {
@@ -39,9 +38,6 @@ function Profile({ onLogout, onUpdateInfo }) {
       if (!e.target.value) {
         setEmailError("Поле email обязательное");
       }
-      if (e.target.value === currentUser.email) {
-        setNameError("Введенное значение совпадает с текущим почтовым адресом");
-      }
     } else {
       setEmailError("");
     }
@@ -50,11 +46,7 @@ function Profile({ onLogout, onUpdateInfo }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name === currentUser.name && email === currentUser.email) {
-      setNameError("Введенное значение не может совпадать с текущим");
-    } else {
       onUpdateInfo(name, email);
-    }
   };
 
   useEffect(() => {
@@ -72,6 +64,13 @@ function Profile({ onLogout, onUpdateInfo }) {
     }
   }, [currentUser]);
 
+  useEffect(() => {
+    if (name === currentUser.name && email === currentUser.email) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+  }, [currentUser, name, email])
 
   return (
     <section className="profile">

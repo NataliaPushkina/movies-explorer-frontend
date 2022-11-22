@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Route } from "react-router-dom";
 import "./MovieCard.css";
 
 function MovieCard({
@@ -8,23 +7,16 @@ function MovieCard({
   duration,
   trailerLink,
   onDeleteClick,
-  onCheckButtonClick,
+  onSaveClick,
   isSaved,
 }) {
-  const [like, setLike] = useState(false);
-  let location = useLocation();
-
-  const onClickButton = (movie) => {
-    onCheckButtonClick(movie, like);
+  const onSaveButton = (movie) => {
+    onSaveClick(movie);
   };
 
   const onDelete = (movie) => {
     onDeleteClick(movie);
   };
-
-  useEffect(() => {
-    setLike(isSaved(movie));
-  }, [isSaved, movie]);
 
   return (
     <li className="card">
@@ -38,18 +30,7 @@ function MovieCard({
         rel="noopener noreferrer nofollow"
         className="card__item-link"
       >
-        {location.pathname === "/movies" ? (
-          <img
-            className="card__image"
-            max-width="360"
-            height="200"
-            controls
-            src={`https://api.nomoreparties.co${movie.image.url}`}
-            alt={name}
-          />
-        ) : null}
-
-        {location.pathname === "/saved-movies" ? (
+        <Route path="/saved-movies">
           <img
             className="card__image"
             max-width="360"
@@ -58,25 +39,41 @@ function MovieCard({
             src={movie.image}
             alt={name}
           />
-        ) : null}
+        </Route>
+        <Route path="/movies">
+          <img
+            className="card__image"
+            max-width="360"
+            height="200"
+            controls
+            src={`https://api.nomoreparties.co${movie.image.url}`}
+            alt={name}
+          />
+        </Route>
       </a>
 
-      {location.pathname === "/movies" ? (
-        <button
-          type="button"
-          className={`${
-            like ? "card__check-button_active" : "card__check-button"
-          }`}
-          onClick={() => onClickButton(movie)}
-        ></button>
-      ) : null}
-      {location.pathname === "/saved-movies" ? (
+      <Route path="/saved-movies">
         <button
           type="button"
           className="card__delete-button_active"
           onClick={() => onDelete(movie)}
         ></button>
-      ) : null}
+      </Route>
+      <Route path="/movies">
+        {isSaved(movie) ? (
+          <button
+            type="button"
+            className="card__check-button_active"
+            onClick={() => onDelete(movie)}
+          ></button>
+        ) : (
+          <button
+            type="button"
+            className="card__check-button"
+            onClick={() => onSaveButton(movie)}
+          ></button>
+        )}
+      </Route>
     </li>
   );
 }

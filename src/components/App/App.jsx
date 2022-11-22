@@ -38,7 +38,6 @@ function App() {
         if (userData) {
           setLoggedIn(true);
           setCurrentUser(userData);
-          console.log(userData);
           history.push(path);
         }
       })
@@ -170,7 +169,7 @@ function App() {
           setErrorMovie(
             "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
           );
-          console.log(errorMovie);
+          console.log(err);
         })
         .finally(() => {
           setIsLoading(false);
@@ -242,9 +241,6 @@ function App() {
     const checkboxChecked = JSON.parse(localStorage.getItem("checkbox"));
     let infoRu;
     let infoEn;
-    console.log("info", info);
-    console.log("data", data);
-    console.log("checkbox", checkboxChecked);
     if (!info) {
       setErrorMovie("Введите поисковый запрос");
     } else {
@@ -272,7 +268,6 @@ function App() {
     if (result.length === 0) {
       setErrorMovie("Ничего не найдено!");
     }
-    console.log("filterData", result);
     return result;
   };
 
@@ -334,8 +329,6 @@ function App() {
     const path = location.pathname;
     const checkbox = JSON.parse(localStorage.getItem("checkbox"));
     if (path === "/saved-movies" && checkbox) {
-      console.log(path);
-      console.log(checkbox);
       setCheckboxChecked(!checkbox);
       localStorage.setItem("checkbox", JSON.stringify(!checkbox));
     }
@@ -343,7 +336,9 @@ function App() {
 
   useEffect(() => {
     const findedMovies = JSON.parse(localStorage.getItem("findedMovies"));
-    setMovies(findedMovies);
+    if (findedMovies) {
+      setMovies(findedMovies);
+    }
   }, []);
 
   useEffect(() => {
@@ -364,8 +359,6 @@ function App() {
             (item) => item.owner === currentUser._id
           );
           setSavedMovies(savedMoviesList);
-          //
-          console.log("сохранённые", savedMoviesList);
         })
         .catch((err) => {
           console.log(err);

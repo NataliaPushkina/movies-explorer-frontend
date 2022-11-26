@@ -19,7 +19,6 @@ function Main({
   handleLogin,
   handleRegister,
   infoTooltipOpen,
-  registrationSuccess,
   movies,
   savedMovies,
   isLoading,
@@ -34,9 +33,8 @@ function Main({
   onUpdateInfo,
   onSaveClick,
   isSaved,
-  handleSearchSavedMovies,
-  handleCheckSaveChange,
   currentUser,
+  filterData
 }) {
   const aboutRef = useRef(null);
 
@@ -65,7 +63,6 @@ function Main({
             <Register
               onRegister={handleRegister}
               onInfoTooltipOpen={infoTooltipOpen}
-              registrationSuccess={registrationSuccess}
             />
           )}
         </Route>
@@ -102,12 +99,8 @@ function Main({
           component={SavedMovies}
           onDeleteClick={handleDeleteClick}
           savedMovies={savedMovies}
-          handleSearchClick={handleSearchSavedMovies}
           isSaved={isSaved}
-          searchInfo={searchInfo}
-          setSearchInfo={setSearchInfo}
-          checkboxChecked={checkboxChecked}
-          onCheckChange={handleCheckSaveChange}
+          filterData={filterData}
         ></ProtectedRoute>
         <Route>
           <NotFoundPage />

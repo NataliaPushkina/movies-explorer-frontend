@@ -5,8 +5,7 @@ function InfoTooltip({
   isInfoTooltipPopupOpened,
   onClose,
   onOverlay,
-
-  ...props
+  message
 }) {
   return (
     <ModalWindow
@@ -14,14 +13,7 @@ function InfoTooltip({
       onClose={onClose}
       onOverlay={onOverlay}
     >
-      {props.updateSuccess ? (
-        <h2 className="modal-window__title">"Данные обновлены!"</h2>
-      ) : (
-        <h2 className="modal-window__title">
-          "Что-то пошло не так! Попробуйте ещё раз."
-        </h2>
-      )
-      }
+      <h1 className="modal-window__title">{message}</h1>
     </ModalWindow>
   );
 }

@@ -23,7 +23,6 @@ function SearchForm({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("searchInfo", JSON.stringify(searchInfo));
     handleSearchClick(searchInfo);
   };
 

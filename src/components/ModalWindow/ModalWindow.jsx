@@ -4,7 +4,7 @@ const ModalWindow = ({
   isInfoTooltipPopupOpened,
   onClose,
   onOverlay,
-  children,
+  children
 }) => {
   return (
     <section

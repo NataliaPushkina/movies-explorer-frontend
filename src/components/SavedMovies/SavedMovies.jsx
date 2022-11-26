@@ -17,6 +17,14 @@ function SavedMovies({
 
   const onCheckChange = () => {
     setСheckbox(!checkbox);
+    console.log(savedMovies, searchSavedInfo, !checkbox);
+    const result = filterData(savedMovies, searchSavedInfo, !checkbox);
+    if (result.length === 0) {
+      setError("Ничего не найдено!");
+    } else {
+      setError("");
+    }
+    setFilteredMovies(result);
   };
 
   const handleSavedSearchClick = (info) => {

@@ -16,8 +16,10 @@ function SearchForm({
     setSearchInfo(e.target.value);
     if (e.target.value.length === 0) {
       setSearchInfoError("Нужно ввести ключевое слово");
+      setFormValid(false);
     } else {
       setSearchInfoError("");
+      setFormValid(true);
     }
   };
 
@@ -33,6 +35,12 @@ function SearchForm({
       setFormValid(false);
     }
   }, [searchInfo, searchInfoError]);
+
+  useEffect(() => {
+    if (!searchInfo) {
+      setSearchInfoError("Нужно ввести ключевое слово");
+    }
+  }, [searchInfo])
 
   return (
     <section className="section__search-form">

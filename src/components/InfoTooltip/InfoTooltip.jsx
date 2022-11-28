@@ -5,7 +5,7 @@ function InfoTooltip({
   isInfoTooltipPopupOpened,
   onClose,
   onOverlay,
-  ...props
+  message
 }) {
   return (
     <ModalWindow
@@ -13,13 +13,7 @@ function InfoTooltip({
       onClose={onClose}
       onOverlay={onOverlay}
     >
-      {props.registrationSuccess ? (
-        <h2 className="modal-window__title">"Вы успешно зарегистрировались!"</h2>
-      ) : (
-        <h2 className="modal-window__title">
-          "Что-то пошло не так! Попробуйте ещё раз."
-        </h2>
-      )}
+      <h1 className="modal-window__title">{message}</h1>
     </ModalWindow>
   );
 }

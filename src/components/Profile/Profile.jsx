@@ -1,25 +1,25 @@
-import { useState, useEffect, useRef } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./Profile.css";
 
-function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
+function Profile({ onLogout, onUpdateInfo }) {
+  const currentUser = useContext(CurrentUserContext);
   const [isEditButtonActive, setIsEditButtonActive] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(false);
 
   const inputRef = useRef(null);
 
-
   const onEditBtnClick = () => {
     inputRef.current.focus();
-    setIsEditButtonActive(!isEditButtonActive)
-  }
+    setIsEditButtonActive(!isEditButtonActive);
+  };
 
   const handleChangeName = (e) => {
-    setName(e.target.value);
     if (e.target.value.length < 2 || e.target.value.length > 30) {
       setNameError("Допустимое количество символов - от 2 до 30");
       if (!e.target.value) {
@@ -28,10 +28,10 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
     } else {
       setNameError("");
     }
+    setName(e.target.value);
   };
 
   const handleChangeEmail = (e) => {
-    setEmail(e.target.value);
     const re = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
     if (!re.test(String(e.target.value).toLowerCase())) {
       setEmailError("Некорректный email");
@@ -41,11 +41,12 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
     } else {
       setEmailError("");
     }
+    setEmail(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onUpdateInfo(name, email);
+      onUpdateInfo(name, email);
   };
 
   useEffect(() => {
@@ -56,11 +57,26 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
     }
   }, [nameError, emailError]);
 
+  useEffect(() => {
+    if (currentUser) {
+      setName(currentUser.name);
+      setEmail(currentUser.email);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (name === currentUser.name && email === currentUser.email) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+  }, [currentUser, name, email])
+
   return (
     <section className="profile">
       <div className="profile-container">
-        <h2 className="profile__title">Привет, {userName}</h2>
-        <form className="profile__form" onSubmit={handleSubmit}>
+        <h2 className="profile__title">Привет, {name}</h2>
+        <form className="profile__form" noValidate onSubmit={handleSubmit}>
           <fieldset className="profile_input-container">
             <label className="profile__label">Имя</label>
             <input
@@ -69,7 +85,6 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
               type="text"
               name="name"
               id="name"
-              placeholder={userName}
               className="profile__input profile__input_name"
               onChange={(e) => handleChangeName(e)}
               value={name || ""}
@@ -84,7 +99,6 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
               type="email"
               name="email"
               id="email"
-              placeholder={userEmail}
               className="profile__input profile__input_email"
               onChange={(e) => handleChangeEmail(e)}
               value={email || ""}
@@ -118,9 +132,9 @@ function Profile({ userName, userEmail, onLogout, onUpdateInfo }) {
               </div>
               <button
                 type="submit"
-                // className="button profile_save-btn profile_save-btn_active"
                 disabled={!isValid}
-                className={`profile_save-btn ${!isValid ? '' : 'profile_save-btn_active'}`}
+                className={`profile_save-btn ${!isValid ? "" : "profile_save-btn_active"
+                  }`}
               >
                 Сохранить
               </button>

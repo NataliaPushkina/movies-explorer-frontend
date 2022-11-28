@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import "./Main.css";
 import Promo from "../Promo/Promo";
 import AboutProject from "../AboutProject/AboutProject";
@@ -12,19 +12,29 @@ import Register from "../Register/Register";
 import Profile from "../Profile/Profile";
 import Login from "../Login/Login";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function Main({
-  userName,
-  userEmail,
   handleLogout,
   handleLogin,
   handleRegister,
   infoTooltipOpen,
-  registrationSuccess,
-  handleCheckButtonClick,
   movies,
+  savedMovies,
   isLoading,
   handleDeleteClick,
+  handleSearchClick,
+  errorMovie,
+  checkboxChecked,
+  onCheckChange,
+  searchInfo,
+  setSearchInfo,
+  loggedIn,
+  onUpdateInfo,
+  onSaveClick,
+  isSaved,
+  currentUser,
+  filterData
 }) {
   const aboutRef = useRef(null);
 
@@ -34,22 +44,27 @@ function Main({
   return (
     <section className="main">
       <Switch>
-        <Route exact path="/profile">
-          <Profile
-            userName={userName}
-            userEmail={userEmail}
-            onLogout={handleLogout}
-          />
-        </Route>
+        <ProtectedRoute
+          exact
+          path="/profile"
+          loggedIn={loggedIn}
+          component={Profile}
+          onLogout={handleLogout}
+          onUpdateInfo={onUpdateInfo}
+          currentUser={currentUser}
+        ></ProtectedRoute>
         <Route exact path="/signin">
-          <Login onLogin={handleLogin} />
+          {loggedIn ? <Redirect to="/" /> : <Login onLogin={handleLogin} />}
         </Route>
         <Route exact path="/signup">
-          <Register
-            onRegister={handleRegister}
-            onInfoTooltipOpen={infoTooltipOpen}
-            registrationSuccess={registrationSuccess}
-          />
+          {loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Register
+              onRegister={handleRegister}
+              onInfoTooltipOpen={infoTooltipOpen}
+            />
+          )}
         </Route>
         <Route exact path="/">
           <Promo handleScrollClick={handleScrollClick} />
@@ -60,16 +75,33 @@ function Main({
             <Portfolio />
           </div>
         </Route>
-        <Route exact path="/movies">
-          <Movies
-            onCheckButtonClick={handleCheckButtonClick}
-            movies={movies}
-            isLoading={isLoading}
-          />
-        </Route>
-        <Route exact path="/saved-movies">
-          <SavedMovies movies={movies} onDeleteClick={handleDeleteClick} />
-        </Route>
+        <ProtectedRoute
+          exact
+          path="/movies"
+          loggedIn={loggedIn}
+          component={Movies}
+          movies={movies}
+          isLoading={isLoading}
+          handleSearchClick={handleSearchClick}
+          errorMovie={errorMovie}
+          checkboxChecked={checkboxChecked}
+          onCheckChange={onCheckChange}
+          searchInfo={searchInfo}
+          setSearchInfo={setSearchInfo}
+          onSaveClick={onSaveClick}
+          isSaved={isSaved}
+          onDeleteClick={handleDeleteClick}
+        ></ProtectedRoute>
+        <ProtectedRoute
+          exact
+          path="/saved-movies"
+          loggedIn={loggedIn}
+          component={SavedMovies}
+          onDeleteClick={handleDeleteClick}
+          savedMovies={savedMovies}
+          isSaved={isSaved}
+          filterData={filterData}
+        ></ProtectedRoute>
         <Route>
           <NotFoundPage />
         </Route>

@@ -16,12 +16,14 @@ function Register({ onRegister }) {
     setName(e.target.value);
     const re = /^[a-zа-яё\s]+$/;
     if (!re.test(String(e.target.value).toLowerCase())) {
-      setNameError('Поле может содержать только символы кириллицы, латиницы и пробел');
+      setNameError(
+        "Поле может содержать только символы кириллицы, латиницы и пробел"
+      );
       if (!e.target.value) {
-        setNameError('Поле name обязательное');
+        setNameError("Поле name обязательное");
       }
     } else {
-      setNameError('');
+      setNameError("");
     }
   };
 
@@ -29,24 +31,26 @@ function Register({ onRegister }) {
     setEmail(e.target.value);
     const re = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
     if (!re.test(String(e.target.value).toLowerCase())) {
-      setEmailError('Некорректный email');
+      setEmailError("Некорректный email");
       if (!e.target.value) {
-        setEmailError('Поле email обязательное');
+        setEmailError("Поле email обязательное");
       }
     } else {
-      setEmailError('');
+      setEmailError("");
     }
   };
 
   const handleChangePassword = (e) => {
     setPassword(e.target.value);
-      if (e.target.value.length < 6 || e.target.value.length > 20) {
-        setPasswordError('Пароль должен содержать от 6 до 20 символов, нужно использовать хотя бы 1 цифру, символ и букву латинского алфавита');
-        if (!e.target.value) {
-          setPasswordError('Поле password обязательное');
+    if (e.target.value.length < 6 || e.target.value.length > 20) {
+      setPasswordError(
+        "Пароль должен содержать от 6 до 20 символов, нужно использовать хотя бы 1 цифру, символ и букву латинского алфавита"
+      );
+      if (!e.target.value) {
+        setPasswordError("Поле password обязательное");
       }
     } else {
-      setPasswordError('');
+      setPasswordError("");
     }
   };
 
@@ -56,12 +60,19 @@ function Register({ onRegister }) {
   };
 
   useEffect(() => {
-    if (nameError || emailError || passwordError) {
+    if (
+      nameError ||
+      emailError ||
+      passwordError ||
+      !name ||
+      !email ||
+      !password
+    ) {
       setIsValid(false);
     } else {
       setIsValid(true);
     }
-  }, [nameError, emailError, passwordError]);
+  }, [nameError, emailError, passwordError, name, email, password]);
 
   return (
     <section className="register">
@@ -111,9 +122,11 @@ function Register({ onRegister }) {
             <span className="input__error password-error">{passwordError}</span>
           </fieldset>
 
-          <button type="submit"
-          disabled={!isValid}
-          className={`${!isValid ? 'form-button' : 'form-button_active'}`}>
+          <button
+            type="submit"
+            disabled={!isValid}
+            className={`${!isValid ? "form-button" : "form-button_active"}`}
+          >
             Зарегистрироваться
           </button>
           <p className="register__text">

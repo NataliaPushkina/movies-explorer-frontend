@@ -41,12 +41,12 @@ function Login({ onLogin }) {
   };
 
   useEffect(() => {
-    if (emailError || passwordError) {
+    if (emailError || passwordError || !email || !password) {
       setIsValid(false);
     } else {
       setIsValid(true);
     }
-  }, [emailError, passwordError])
+  }, [emailError, passwordError, email, password]);
 
   return (
     <section className="login">
@@ -90,9 +90,6 @@ function Login({ onLogin }) {
           className={`${!isValid ? 'form-button' : 'form-button_active'}`}>
             Войти
           </button>
-
-
-          {/* <button type="submit" className="form__button"> */}
 
           <p className="login__text">
             Ещё не зарегистрированы?

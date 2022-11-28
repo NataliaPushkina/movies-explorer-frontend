@@ -15,13 +15,14 @@ function Register({ onRegister }) {
   const handleChangeName = (e) => {
     setName(e.target.value);
     const re = /^[a-zа-яё\s]+$/;
-    if (!re.test(String(e.target.value).toLowerCase())) {
+    if (e.target.value.length < 2) {
+      setNameError("Поле name должно содержать не меньше 2 символов");
+    } else if (!re.test(String(e.target.value).toLowerCase())) {
       setNameError(
         "Поле может содержать только символы кириллицы, латиницы и пробел"
-      );
-      if (!e.target.value) {
+      )
+    } else if (!e.target.value) {
         setNameError("Поле name обязательное");
-      }
     } else {
       setNameError("");
     }

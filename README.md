@@ -1,5 +1,7 @@
-# movies-explorer-frontend
-https://pushkina.nomoredomains.icu
+# Учебный проект "Movies-explorer"
 
-# Ссылка на макет Figma
-https://disk.yandex.ru/d/5AxG1xnmw1KIBw
+## Функционал: поиск фильмов по ключевому слову, создание базы данных сохранённых фильмов, авторизация пользователей.
+
+Технологии: React.js, CSS
+
+Ссылка на backend-часть проекта: https://github.com/NataliaPushkina/movies-explorer-api

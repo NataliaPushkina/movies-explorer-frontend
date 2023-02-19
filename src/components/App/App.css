@@ -1,0 +1,16 @@
+@import url('../../vendor/normalize.css');
+@import url('../../vendor/fonts/fonts.css');
+@import url('../common-styles/link.css');
+@import url('../common-styles/button.css');
+@import url('../common-styles/logo-icon.css');
+@import url('../common-styles/user-icon.css');
+@import url('../common-styles/section__title.css');
+@import url('../common-styles/section__title-border.css');
+@import url('../common-styles/form-button.css');
+
+
+.app {
+  margin: 0 auto;
+  font-family: 'Inter', Arial, sans-serif;
+  background: #FAFAFA;
+}

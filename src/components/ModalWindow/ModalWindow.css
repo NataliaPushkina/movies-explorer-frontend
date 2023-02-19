@@ -1,0 +1,106 @@
+.modal-window {
+  background-color: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.5s linear;
+}
+
+.modal-window_opened {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-window__container {
+  width: 100%;
+  max-width: 430px;
+  min-height: 330px;
+  margin: auto;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  background-color: #fff;
+  z-index: 3;
+}
+
+.modal-window__close-btn {
+  background-image: url("../../images/delete-icon.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 28px;
+  height: 28px;
+  z-index: 3;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.modal-window__title {
+  margin: 34px auto 0;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000;
+  text-align: center;
+  align-self: center;
+  justify-self: center;
+  padding: 0 20px;
+}
+
+.modal-window__confirm-btn {
+  border: none;
+  width: 100%;
+  max-width: 358px;
+  height: 50px;
+  background-color: #3456F3;
+  border-radius: 2px;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #fff;
+  margin: 48px auto 37px;
+  padding: 0;
+  align-self: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: opacity 0.4s;
+}
+
+@media screen and (max-width: 900px) {
+  .modal-window__close-btn {
+    width: 20px;
+    height: 20px;
+    top: 36px;
+    right: 36px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .modal-window__container {
+    max-width: 282px;
+    min-height: 322px;
+    padding: 0 22px;
+  }
+  .modal-window__title {
+    margin: 25px 0 0;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    align-self: center;
+  }
+}

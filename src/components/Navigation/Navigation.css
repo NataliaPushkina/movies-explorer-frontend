@@ -1,0 +1,31 @@
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.navigation__item {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: #000;
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+.navigation__item-active {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.navigation__item:first-child {
+  margin: 0;
+}
+
+.navigation__user-account {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-left: 50px;
+}

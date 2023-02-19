@@ -15,4 +15,3 @@
 * git clone https://github.com/NataliaPushkina/movies-explorer-frontend.git
 * npm install
 * npm start
-
